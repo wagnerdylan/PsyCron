@@ -16,12 +16,16 @@ typedef uint32_t (*milli_second)();
 typedef void (*drop_clock)();
 typedef void (*raise_clock)();
 
+typedef void (*print_msg)(char* msg);
+
 typedef struct UIIL{
     micro_second    sys_micro_sec;
     milli_second    sys_mili_second;
 
-    drop_clock      sys_drop_core_clock();
-    raise_clock     sys_raise_core_clock();
+    drop_clock      sys_drop_core_clock;
+    raise_clock     sys_raise_core_clock;
+
+    print_msg       sys_print_msg();
 
     UIIL()
         : sys_micro_sec(0)
