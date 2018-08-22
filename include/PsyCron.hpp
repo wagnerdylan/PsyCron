@@ -15,15 +15,10 @@
 #include "usr/UIIL.hpp"
 
 class PsyCron;
+class Routine;
 
 class PsyTrack {
 public:
-
-    // Used to display debug error messages
-    //
-    // param: error
-    //      The error message to be displayed
-    void sys_display_error(char* error);
 
 private:
 
@@ -68,7 +63,6 @@ private:
 
     // Used to block any misuse of the PsyCron system in regards to initialization
     bool running;
-
 };
 
 
@@ -110,13 +104,6 @@ protected:
     //      true: if routine was successfully submitted
     //      false: otherwise
     bool add_this_by_milli(uint32_t milli_seconds);
-
-
-    // Calls the system error function
-    //
-    // param: error
-    //      The error message to be displayed
-    void sys_display_error(char* error);
 
 private:
 
