@@ -20,6 +20,12 @@ class Routine;
 class PsyTrack {
 public:
 
+    void *operator new(size_t size);
+
+    void add_routine(Routine *routine);
+
+    int execute();
+
 private:
 
     PsyCron *hold_os;
@@ -39,14 +45,7 @@ public:
     // Executes one routine within the current track
     void execute();
 
-    // Creates a track to be included into the PsyCron system.
-    //
-    // param: cap
-    //      The capacity of the track
-    // return:
-    //      A new Track object
-    //
-    PsyTrack *build_track(uint16_t cap);
+    void add_track(PsyTrack *track);
 
     // Swaps operating execution environments
     //
@@ -68,7 +67,7 @@ private:
 
 class Routine{
 
-    friend class Track;
+    friend class PsyTrack;
 
 public:
 
@@ -108,6 +107,8 @@ protected:
 private:
 
     PsyTrack *hold_track;
+
+    uint32_t priority_value;
 
 };
 
