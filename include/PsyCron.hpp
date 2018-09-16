@@ -31,6 +31,7 @@ private:
     PsyCron *hold_os;
 };
 
+
 class PsyCron {
 
     friend class Track;
@@ -74,7 +75,9 @@ public:
     // Pure virtual function called when routine is executed
     virtual void run() = 0;
 
-    void *operator new(size_t size);
+    inline void *operator new(size_t size){
+        return malloc(size);
+    }
 
 protected:
 
@@ -111,5 +114,8 @@ private:
     uint32_t priority_value;
 
 };
+
+// OS level exceptions which do not exist in embedded applications
+extern "C" void __cxa_pure_virtual() { while (1); }
 
 #endif //PROJECT_PSYCRON.H

@@ -10,11 +10,22 @@ uint32_t get_milli(){
     return 10;
 }
 
+class TestRoutine : public Routine 
+{
+public:
+    void run(){
+        int i = 10;
+    }
+
+    int16_t get_some_val(){
+        return(221);
+    }
+};
+
 int main(){
 
     UIIL config;
 
-    //uint32_t millis = PsyUtils::conv_micros_to_millis(1000);
-
-    config.sys_mili_second = get_milli;
+    TestRoutine *test = new TestRoutine();
+    test->run();
 }
