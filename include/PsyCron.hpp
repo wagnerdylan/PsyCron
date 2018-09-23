@@ -111,7 +111,7 @@ private:
 
     PsyTrack *hold_track;
 
-    uint32_t priority_value;
+    uint32_t sch_metric;
 
 };
 
