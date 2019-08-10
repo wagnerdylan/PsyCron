@@ -22,11 +22,17 @@ public:
     }
 };
 
+class TestTimedRoutine : public TimedRoutine
+{
+public:
+    TestTimedRoutine(uint32_t time_delay) : TimedRoutine(time_delay){};
+};
+
 int main(){
 
     UIIL config;
     config.sys_milli_second = get_milli;
 
-    Routine *test = new TestRoutine();
-
+    Routine* test = new TestRoutine();
+    TimedRoutine* test_timed = new TestTimedRoutine(100);
 }

@@ -16,34 +16,34 @@
 #include "UIIL.hpp"
 #include "PsyRail.hpp"
 #include "PsyUtils.hpp"
-
+#include "PsyTrack.hpp"
 
 class PsyCron {
 
-    friend class PsyRail;
+    friend class PsyTrack;
 
 public:
 
     // Allows user implemented functions to be included into the PsyCron system
-    PsyCron(UIIL user_parameters, uint8_t num_rail);
+    PsyCron(UIIL user_parameters, uint8_t num_track);
 
-    explicit PsyCron(uint8_t num_rail);
+    explicit PsyCron(uint8_t num_track);
 
     // Executes one routine within the current track
     void execute();
 
-    void add_rail(PsyRail *rail);
+    PsyTrack* create_add_track(uint16_t cap);
 
     // Swaps operating execution environments
     //
     // param: index
     //      The index of the track to be swapped in
-    void swap_rail(uint8_t index);
+    void swap_track(uint8_t index);
 
 private:
 
-    PsyRail *current_rail;
-    PsyRail **rail_array;
+    PsyTrack *current_track;
+    PsyTrack **rail_track;
 
     UIIL sys_utilities;
 

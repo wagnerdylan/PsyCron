@@ -27,7 +27,7 @@ protected:
 private:
 
     // Pure virtual function called when routine is executed
-    virtual void run() = 0;
+    void run();
 
     PsyRail *hold_rail;
 
@@ -42,6 +42,11 @@ class TimedRoutine{
     friend class PsyRail;
 
 public:
+
+	TimedRoutine(uint32_t time_delay)
+	: time_delay(time_delay)
+	{ // TODO check if time utils are enabled
+	}
 
     inline void *operator new(size_t size){
         return malloc(size);
@@ -61,7 +66,7 @@ protected:
 private:
 
     // Pure virtual function called when routine is executed
-    virtual void run() = 0;
+    void run();
 
     PsyRail *hold_rail;
 
