@@ -1,9 +1,11 @@
 
-#ifndef PSYRAIL
-#define PSYRAIL
+#ifndef PSYRAIL_HPP
+#define PSYRAIL_HPP
 
-#include "../PsyCron.hpp"
-#include "../queue"
+#include "queue"
+
+class Routine;
+class TimedRoutine;
 
 class PsyRail{
 
@@ -33,7 +35,8 @@ protected:
 
 private:
 
-    priority_queue<Routine, Comparator> sch_queue;
+    // The regular priority queue
+    //priority_queue<Routine, Comparator> sch_queue;
 
 };
 

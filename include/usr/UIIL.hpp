@@ -10,26 +10,19 @@
 #ifndef PROJECT_UIIL_H
 #define PROJECT_UIIL_H
 
-typedef uint32_t (*micro_second)();
-typedef uint32_t (*milli_second)();
-
-typedef void (*drop_clock)();
-typedef void (*raise_clock)();
-
-typedef void (*print_msg)(char* msg);
-
 typedef struct UIIL{
-    micro_second    sys_micro_sec;
-    milli_second    sys_mili_second;
+    uint32_t(*sys_micro_second)();
+    uint32_t(*sys_milli_second)();
 
-    drop_clock      sys_drop_core_clock;
-    raise_clock     sys_raise_core_clock;
+    void*(*sys_drop_core_clock)();
+    void*(*sys_raise_core_clock)();
 
-    print_msg       sys_print_msg();
+    char*(*sys_print_msg());
 
+    // Init these values to zero so we know they havent been implemented yet.
     UIIL()
-        : sys_micro_sec(0)
-        , sys_mili_second(0)
+        : sys_micro_second(0)
+        , sys_milli_second(0)
         , sys_drop_core_clock(0)
         , sys_raise_core_clock(0)
     {
