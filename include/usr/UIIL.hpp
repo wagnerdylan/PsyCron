@@ -10,6 +10,8 @@
 #ifndef PROJECT_UIIL_H
 #define PROJECT_UIIL_H
 
+namespace psycron {
+
 typedef struct UIIL{
     uint32_t(*sys_micro_second)();
     uint32_t(*sys_milli_second)();
@@ -28,5 +30,7 @@ typedef struct UIIL{
     {
     }
 } UIIL;
+
+}
 
 #endif //PROJECT_UIIL_H

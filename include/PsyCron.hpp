@@ -14,9 +14,9 @@
 
 #include "PsyRoutine.hpp"
 #include "UIIL.hpp"
-#include "PsyRail.hpp"
-#include "PsyUtils.hpp"
 #include "PsyTrack.hpp"
+
+namespace psycron {
 
 class PsyCron {
 
@@ -50,6 +50,8 @@ private:
     // Used to block any misuse of the PsyCron system in regards to initialization
     bool running;
 };
+
+}
 
 // OS level exceptions which do not exist in embedded applications
 extern "C" void __cxa_pure_virtual() { while (1); }

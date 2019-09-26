@@ -4,17 +4,18 @@
 
 #include <stdlib.h>
 
-class PsyRail;
+#include "PsyRail.hpp"
 
-class Routine{
+namespace psycron {
 
-    friend class PsyRail;
+
+class PriorityRoutine{
+
+    friend class PsyRail<PriorityRoutine>;
 
 public:
 
-    inline void *operator new(size_t size){
-        return malloc(size);
-    };
+    PriorityRoutine(){};
 
 protected:
 
@@ -26,10 +27,10 @@ protected:
 
 private:
 
-    // Pure virtual function called when routine is executed
-    void run();
+    // virtual function called when routine is executed
+    virtual void run(){};
 
-    PsyRail *hold_rail;
+    PsyRail<PriorityRoutine> *hold_rail;
 
     // The calculated priority value
     uint32_t sch_metric;
@@ -39,7 +40,7 @@ private:
 
 class TimedRoutine{
 
-    friend class PsyRail;
+    friend class PsyRail<TimedRoutine>;
 
 public:
 
@@ -47,10 +48,6 @@ public:
 	: time_delay(time_delay)
 	{ // TODO check if time utils are enabled
 	}
-
-    inline void *operator new(size_t size){
-        return malloc(size);
-    };
 
 protected:
 
@@ -65,16 +62,18 @@ protected:
 
 private:
 
-    // Pure virtual function called when routine is executed
-    void run();
+    // virtual function called when routine is executed
+    virtual void run(){};
 
-    PsyRail *hold_rail;
+    PsyRail<TimedRoutine> *hold_rail;
 
-    // The time at which this routime is to be executed in milliseconds
+    // The time at which this routine is to be executed in milliseconds
     uint32_t sch_metric;
 
-    // The delay at which this routime is to be executed in milliseconds
+    // The delay at which this routine is to be executed in milliseconds
     uint32_t time_delay;
 };
+
+}
 
 #endif

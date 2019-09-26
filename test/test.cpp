@@ -8,31 +8,49 @@ uint32_t get_milli(){
     return 10;
 }
 
-class TestRoutine : public Routine 
+class TestRoutine : public psycron::PriorityRoutine 
 {
 public:
+
+    int16_t get_some_val(){
+        return(221);
+    }
+
+private:
+
     void run(){
         int i = 10;
 
         get_some_val();
     }
+};
+
+class TestTimedRoutine : public psycron::TimedRoutine
+{
+public:
+
+    TestTimedRoutine(uint32_t time_delay) : 
+        psycron::TimedRoutine(time_delay){};
 
     int16_t get_some_val(){
         return(221);
     }
-};
 
-class TestTimedRoutine : public TimedRoutine
-{
-public:
-    TestTimedRoutine(uint32_t time_delay) : TimedRoutine(time_delay){};
+private:
+
+    void run(){
+        int i = 10;
+
+        get_some_val();
+    }
 };
 
 int main(){
 
-    UIIL config;
+    psycron::UIIL config;
     config.sys_milli_second = get_milli;
 
-    Routine* test = new TestRoutine();
-    TimedRoutine* test_timed = new TestTimedRoutine(100);
+    psycron::PriorityRoutine test = TestRoutine();
+    psycron::TimedRoutine test_timed = TestTimedRoutine(100);
+
 }
