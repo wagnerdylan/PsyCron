@@ -1,3 +1,10 @@
+//
+// PsyCron
+// File: PsyRoutine.hpp
+// Author: Dylan R. Wagner (drw6528@rit.edu)
+// Description:
+//      PsyRoutine header file. Defines the routine classes inherited by users.
+//
 
 #ifndef PSYROUTINE_HPP
 #define PSYROUTINE_HPP

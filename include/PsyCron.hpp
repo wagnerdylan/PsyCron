@@ -3,7 +3,7 @@
 // File: PsyCron.hpp
 // Author: Dylan R. Wagner (drw6528@rit.edu)
 // Description:
-//      PsyCron is a real time operating system designed in compliance with JSF C++
+//      PsyCron is a simplistic soft Run to Completion (RTC) priority and time based scheduler designed for embedded applications. 
 //      ...
 //
 

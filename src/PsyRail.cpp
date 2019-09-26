@@ -1,6 +1,6 @@
 //
 // PsyCron
-// File: PsyRail.hpp
+// File: PsyRail.cpp
 // Author: Dylan R. Wagner (drw6528@rit.edu)
 // Description:
 //     PsyRail implementation

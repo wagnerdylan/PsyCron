@@ -1,3 +1,11 @@
+//
+// PsyCron
+// File: PsyTrack.hpp
+// Author: Dylan R. Wagner (drw6528@rit.edu)
+// Description:
+// 		PsyTrack header file.
+//
+
 #ifndef PSYTRACK_HPP
 #define PSYTRACK_HPP
 

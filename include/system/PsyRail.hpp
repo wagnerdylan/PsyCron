@@ -1,3 +1,10 @@
+//
+// PsyCron
+// File: PsyRail.hpp
+// Author: Dylan R. Wagner (drw6528@rit.edu)
+// Description:
+//      PsyRail header File.
+//
 
 #ifndef PSYRAIL_HPP
 #define PSYRAIL_HPP
