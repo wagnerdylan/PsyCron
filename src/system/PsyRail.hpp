@@ -15,11 +15,17 @@
 
 namespace psycron {
 
-class PriorityRoutine;
-class TimedRoutine;
+// Forward declarations
+template <typename EnvType>
 class PsyTrack;
 
-template <class RailType>
+template <typename EnvType>
+class PriorityRoutine;
+
+template <typename EnvType>
+class TimedRoutine;
+
+template <class RailType, typename EnvType>
 class PsyRail{
 
 public:
@@ -27,17 +33,17 @@ public:
     virtual void execute() = 0;
 
     // TODO make this move routine
-    void insert_routine(RailType routine, uint32_t value);
+    void insert_routine(RailType* routine, uint32_t value);
 
 protected:
 
-    PsyRail(PsyTrack* track, uint16_t cap) :
-        hold_track(track),
-        cap(cap){}
+    PsyRail(PsyTrack<EnvType>* track, uint16_t cap) :
+        m_hold_track(track),
+        m_cap(cap){}
 
-    PsyTrack* hold_track;
+    PsyTrack<EnvType>* m_hold_track;
 
-    uint16_t cap;
+    uint16_t m_cap;
     
     //priority_queue<RailType, Comparator> sch_queue;
     
@@ -60,42 +66,44 @@ private:
 
 };
 
-class PriorityPsyRail : public PsyRail<PriorityRoutine>{
+template <typename EnvType>
+class PriorityPsyRail final : public PsyRail<PriorityRoutine<EnvType>, EnvType>{
 
 public:
 
-    PriorityPsyRail(PsyTrack* track, uint16_t cap) : 
-        PsyRail(track, cap){};
+    PriorityPsyRail(PsyTrack<EnvType>* track, uint16_t cap) : 
+        PsyRail<PriorityRoutine<EnvType>, EnvType>::PsyRail{track, cap}{};
 
-    void execute();
+    void execute(){};
 
 private:
 
-    uint32_t process_value(uint32_t value);
+    uint32_t process_value(uint32_t value){};
 
-    void priority_reset(uint32_t rst_max);
+    void priority_reset(uint32_t rst_max){};
 
 };
 
-class TimedPsyRail : public PsyRail<TimedRoutine>{
+template <typename EnvType>
+class TimedPsyRail final : public PsyRail<TimedRoutine<EnvType>, EnvType>{
 
 public:
 
-    TimedPsyRail(PsyTrack* track, uint16_t cap) : 
-        PsyRail(track, cap){};
+    TimedPsyRail(PsyTrack<EnvType>* track, uint16_t cap) : 
+        PsyRail<TimedRoutine<EnvType>, EnvType>::PsyRail{track, cap}{};
 
     /**
      * Timed rail will execute routines which are hold execution time equal to or behind the
      * actual system time. This is done so timed routines don't miss execution deadlines by
      * significant margins.
      */
-    void execute();
+    void execute(){};
 
 private:
 
-    uint32_t process_value(uint32_t value);
+    uint32_t process_value(uint32_t value){};
 
-    void priority_reset(uint32_t rst_max);
+    void priority_reset(uint32_t rst_max){};
 
 };
 

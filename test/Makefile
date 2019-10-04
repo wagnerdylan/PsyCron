@@ -1,11 +1,11 @@
 CXX = g++
-INCLUDE = -I../include -I../include/usr -I../include/system -I../lib
+INCLUDE = -I../src -I../src/usr -I../src/system -I../lib
 SRC_DIR = ../src
 FILES = test.cpp
-OBJECTS = test.o PsyRail.o
+OBJECTS = test.o
 
 $(OBJECTS): $(FILES)
-	$(CXX) -c $(FILES) $(SRC_DIR)/PsyRail.cpp $(INCLUDE)
+	$(CXX) -c $(FILES) $(INCLUDE)
 
 g++_build: $(OBJECTS)
 	$(CXX) -o test $(OBJECTS) 

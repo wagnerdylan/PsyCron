@@ -20,7 +20,7 @@ namespace psycron {
 
 class PsyCron {
 
-    friend class PsyTrack;
+    friend class PsyTrackBase;
 
 public:
 
@@ -32,7 +32,7 @@ public:
     // Executes one routine within the current track
     void execute();
 
-    PsyTrack* create_add_track(uint16_t cap);
+    PsyTrackBase* add_track(PsyTrackBase* psytrack);
 
     // Swaps operating execution environments
     //
@@ -42,8 +42,8 @@ public:
 
 private:
 
-    PsyTrack *current_track;
-    PsyTrack **rail_track;
+    PsyTrackBase *current_track;
+    PsyTrackBase **rail_track;
 
     UIIL sys_utilities;
 

@@ -11,18 +11,24 @@
 
 #include <stdlib.h>
 
-#include "PsyRail.hpp"
-
 namespace psycron {
 
+// Forward declaration 
+template <class RailType, typename EnvType>
+class PsyRail;
 
+template <typename EnvType>
 class PriorityRoutine{
 
-    friend class PsyRail<PriorityRoutine>;
+    friend class PsyRail<PriorityRoutine, EnvType>;
 
 public:
 
     PriorityRoutine(){};
+
+    inline void *operator new(size_t size){
+        return malloc(size);
+    }
 
 protected:
 
@@ -35,26 +41,30 @@ protected:
 private:
 
     // virtual function called when routine is executed
-    virtual void run(){};
+    virtual void run() = 0;
 
-    PsyRail<PriorityRoutine> *hold_rail;
+    PsyRail<PriorityRoutine, EnvType>* m_hold_rail;
 
     // The calculated priority value
-    uint32_t sch_metric;
+    uint32_t m_sch_metric;
 
 };
 
-
+template <typename EnvType>
 class TimedRoutine{
 
-    friend class PsyRail<TimedRoutine>;
+    friend class PsyRail<TimedRoutine, EnvType>;
 
 public:
 
 	TimedRoutine(uint32_t time_delay)
-	: time_delay(time_delay)
+	: m_time_delay(time_delay)
 	{ // TODO check if time utils are enabled
 	}
+
+    inline void *operator new(size_t size){
+        return malloc(size);
+    }   
 
 protected:
 
@@ -70,15 +80,15 @@ protected:
 private:
 
     // virtual function called when routine is executed
-    virtual void run(){};
+    virtual void run() = 0;
 
-    PsyRail<TimedRoutine> *hold_rail;
+    PsyRail<TimedRoutine, EnvType>* m_hold_rail;
 
     // The time at which this routine is to be executed in milliseconds
-    uint32_t sch_metric;
+    uint32_t m_sch_metric;
 
     // The delay at which this routine is to be executed in milliseconds
-    uint32_t time_delay;
+    uint32_t m_time_delay;
 };
 
 }
