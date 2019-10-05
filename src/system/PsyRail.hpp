@@ -32,8 +32,7 @@ public:
 
     virtual void execute() = 0;
 
-    // TODO make this move routine
-    void insert_routine(RailType* routine, uint32_t value);
+    void insert_routine(RailType* routine, uint32_t value){};
 
 protected:
 

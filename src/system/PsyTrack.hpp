@@ -38,7 +38,7 @@ private:
 };
 
 template <typename EnvType>
-class PsyTrack : public PsyTrackBase{
+class PsyTrack final: public PsyTrackBase{
 
 public:
 
@@ -53,11 +53,15 @@ public:
         return malloc(size);
     }
 
-    void insert_routine(PriorityRoutine<EnvType>* routine, uint32_t value);
+    void insert_routine(PriorityRoutine<EnvType>* routine, uint32_t value){
+		m_priority_rail.insert_routine(routine, value);
+	};
 
-    void insert_routine(TimedRoutine<EnvType>* routine, uint32_t value);
+    void insert_routine(TimedRoutine<EnvType>* routine, uint32_t value){
+		m_timed_rail.insert_routine(routine, value);
+	};
 
-	EnvType* get_environment(){
+	inline EnvType* get_environment(){
 		return &m_global_env;
 	}
 

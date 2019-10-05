@@ -3,7 +3,7 @@
  * Organization: RIT Space Exploration
  * Author: Dylan Wagner (drw6528@rit.edu)
  * Description:
- *	    Priority Queue implementation using a min-heap.
+ *	    Priority Queue implementation using a heap.
  */
 
 #include <stdlib.h>

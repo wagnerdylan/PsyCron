@@ -56,10 +56,11 @@ int main(){
 
     int simple_env = 42;
 
-    psycron::PsyTrack<int> *track_one = new psycron::PsyTrack<int>(10, nullptr, 0, std::move(simple_env));
+    psycron::PsyTrack<int> *track_one = 
+        new psycron::PsyTrack<int>(10, nullptr, 0, std::move(simple_env));
 
-    psycron::PriorityRoutine<int> *test = new TestRoutine<int>();
-    psycron::TimedRoutine<int> *test_timed = new TestTimedRoutine<int>(100);
+    track_one->insert_routine(new TestRoutine<int>(), 0);
+    track_one->insert_routine(new TestTimedRoutine<int>(100), 0);
 
     std::cout << *track_one->get_environment();
 }
