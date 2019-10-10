@@ -42,28 +42,28 @@ class PsyTrack final: public PsyTrackBase{
 
 public:
 
-	PsyTrack(uint16_t cap, PsyCron* os, size_t id, EnvType&& global_env) :
+	PsyTrack(size_t id, EnvType&& global_env, PsyCron* os) :
 		PsyTrackBase{os, id},
-		m_priority_rail{this, cap},
-		m_timed_rail{this, cap},
+		m_priority_rail{this},
+		m_timed_rail{this},
 		m_global_env{global_env}
 		{}
 
 	inline void *operator new(size_t size){
-        return malloc(size);
-    }
+        	// TODO Use custom allocator for this
+    	}
 
-    void insert_routine(PriorityRoutine<EnvType>* routine, uint32_t value){
+    	void insert_routine(PriorityRoutine<EnvType>* routine, uint32_t value){
 		m_priority_rail.insert_routine(routine, value);
 	};
 
-    void insert_routine(TimedRoutine<EnvType>* routine, uint32_t value){
+    	void insert_routine(TimedRoutine<EnvType>* routine, uint32_t value){
 		m_timed_rail.insert_routine(routine, value);
 	};
 
 	inline EnvType* get_environment(){
 		return &m_global_env;
-	}
+	};
 
 private:
 

@@ -20,35 +20,57 @@ namespace psycron {
 
 class PsyCron {
 
-    friend class PsyTrackBase;
+    	friend class PsyTrackBase;
 
 public:
-
+ 
+    explicit PsyCron(size_t track_cap):
+	    m_current_track{nullptr},
+	    m_user_parameters{},
+	    m_running{false},
+	    m_track_cap{track_cap},
+	    m_num_track_cnt{0}{};
+    
     // Allows user implemented functions to be included into the PsyCron system
-    PsyCron(UIIL user_parameters, uint8_t num_track);
-
-    explicit PsyCron(uint8_t num_track);
+    explicit PsyCron(UIIL user_parameters, size_t track_cap):
+	    m_current_track{nullptr},
+	    m_user_parameters{user_parameters},
+	    m_running{false},
+	    m_track_cap{track_cap},
+	    m_num_track_cnt{0}{};
 
     // Executes one routine within the current track
     void execute();
 
-    PsyTrackBase* add_track(PsyTrackBase* psytrack);
+    template<typename EnvType>
+    PsyTrack<EnvType>* add_track(size_t id, EnvType& global_env){
+	PsyTrack<EnvType>* track = 
+		new PsyTrack<EnvType>(id, (EnvType&&) global_env, this);
+	
+	m_rail_track[++m_num_track_cnt] = track;
+	
+	return track;
+    }
 
-    // Swaps operating execution environments
-    //
-    // param: index
-    //      The index of the track to be swapped in
+    /**
+     * Swaps operating execution environments
+     *
+     * @param[in] index The index of the track to be swapped in.
+     */
     void swap_track(uint8_t index);
 
 private:
 
-    PsyTrackBase *current_track;
-    PsyTrackBase **rail_track;
+    PsyTrackBase* m_current_track;
+    PsyTrackBase** m_rail_track;
 
-    UIIL sys_utilities;
+    UIIL m_user_parameters;
 
     // Used to block any misuse of the PsyCron system in regards to initialization
-    bool running;
+    bool m_running;
+
+    size_t m_track_cap;
+    size_t m_num_track_cnt;
 };
 
 }

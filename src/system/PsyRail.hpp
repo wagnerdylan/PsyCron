@@ -36,13 +36,11 @@ public:
 
 protected:
 
-    PsyRail(PsyTrack<EnvType>* track, uint16_t cap) :
-        m_hold_track(track),
-        m_cap(cap){}
+    PsyRail(PsyTrack<EnvType>* track) :
+        m_hold_track(track)
+	{}
 
     PsyTrack<EnvType>* m_hold_track;
-
-    uint16_t m_cap;
     
     //priority_queue<RailType, Comparator> sch_queue;
     
@@ -70,8 +68,8 @@ class PriorityPsyRail final : public PsyRail<PriorityRoutine<EnvType>, EnvType>{
 
 public:
 
-    PriorityPsyRail(PsyTrack<EnvType>* track, uint16_t cap) : 
-        PsyRail<PriorityRoutine<EnvType>, EnvType>::PsyRail{track, cap}{};
+    PriorityPsyRail(PsyTrack<EnvType>* track) : 
+        PsyRail<PriorityRoutine<EnvType>, EnvType>::PsyRail{track}{};
 
     void execute(){};
 
@@ -88,8 +86,8 @@ class TimedPsyRail final : public PsyRail<TimedRoutine<EnvType>, EnvType>{
 
 public:
 
-    TimedPsyRail(PsyTrack<EnvType>* track, uint16_t cap) : 
-        PsyRail<TimedRoutine<EnvType>, EnvType>::PsyRail{track, cap}{};
+    TimedPsyRail(PsyTrack<EnvType>* track) : 
+        PsyRail<TimedRoutine<EnvType>, EnvType>::PsyRail{track}{};
 
     /**
      * Timed rail will execute routines which are hold execution time equal to or behind the

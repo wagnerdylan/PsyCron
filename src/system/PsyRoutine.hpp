@@ -9,8 +9,6 @@
 #ifndef PSYROUTINE_HPP
 #define PSYROUTINE_HPP
 
-#include <stdlib.h>
-
 namespace psycron {
 
 // Forward declaration 
@@ -27,7 +25,7 @@ public:
     PriorityRoutine(){};
 
     inline void *operator new(size_t size){
-        return malloc(size);
+        // TODO Use custom allocator for this
     }
 
 protected:
@@ -63,7 +61,7 @@ public:
 	}
 
     inline void *operator new(size_t size){
-        return malloc(size);
+        // TODO Use custom allocator for this
     }   
 
 protected:

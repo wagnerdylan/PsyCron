@@ -2,7 +2,7 @@
 // Created by Dylan Wagner on 8/1/18.
 //
 
-#include <iostream>
+//#include <iostream>
 
 #include "PsyCron.hpp"
 
@@ -23,8 +23,6 @@ private:
 
     void run(){
         int i = 10;
-
-        std::cout << get_some_val();
     }
 };
 
@@ -44,8 +42,6 @@ private:
 
     void run(){
         int i = 10;
-
-        std::cout << get_some_val();
     }
 };
 
@@ -54,13 +50,13 @@ int main(){
     psycron::UIIL config;
     config.sys_milli_second = get_milli;
 
+    psycron::PsyCron psycron_ins(config);
+
     int simple_env = 42;
 
     psycron::PsyTrack<int> *track_one = 
-        new psycron::PsyTrack<int>(10, nullptr, 0, std::move(simple_env));
+        psycron_ins.add_track<int>(0, simple_env);
 
     track_one->insert_routine(new TestRoutine<int>(), 0);
     track_one->insert_routine(new TestTimedRoutine<int>(100), 0);
-
-    std::cout << *track_one->get_environment();
 }
