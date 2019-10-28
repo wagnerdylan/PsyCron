@@ -1,19 +1,23 @@
 //
 // PsyCron
-// File: PsyRoutine.hpp
+// File: PsyRoutine.hh
 // Author: Dylan R. Wagner (drw6528@rit.edu)
 // Description:
 //      PsyRoutine header file. Defines the routine classes inherited by users.
 //
 
-#ifndef PSYROUTINE_HPP
-#define PSYROUTINE_HPP
+#ifndef PSYROUTINE_HH
+#define PSYROUTINE_HH
+
+#include <stddef.h>
 
 namespace psycron {
 
 // Forward declaration 
 template <class RailType, typename EnvType>
 class PsyRail;
+
+void* psyalloc_key_func(size_t size);
 
 template <typename EnvType>
 class PriorityRoutine{
@@ -25,8 +29,8 @@ public:
     PriorityRoutine(){};
 
     inline void *operator new(size_t size){
-        // TODO Use custom allocator for this
-    }
+        return psyalloc_key_func(size);
+    };
 
 protected:
 
@@ -61,8 +65,8 @@ public:
 	}
 
     inline void *operator new(size_t size){
-        // TODO Use custom allocator for this
-    }   
+        return psyalloc_key_func(size);
+    };
 
 protected:
 

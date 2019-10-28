@@ -1,20 +1,22 @@
 //
 // PsyCron
-// File: PsyTrack.hpp
+// File: PsyTrack.hh
 // Author: Dylan R. Wagner (drw6528@rit.edu)
 // Description:
 // 		PsyTrack header file.
 //
 
-#ifndef PSYTRACK_HPP
-#define PSYTRACK_HPP
+#ifndef PSYTRACK_HH
+#define PSYTRACK_HH
 
-#include "PsyRail.hpp"
+#include "PsyRail.hh"
 
 namespace psycron {
 
 class PsyCron;
 class UIIL;
+
+void* psyalloc_key_func(size_t size);
 
 class PsyTrackBase{
 
@@ -50,14 +52,14 @@ public:
 		{}
 
 	inline void *operator new(size_t size){
-        	// TODO Use custom allocator for this
-    	}
+        return psyalloc_key_func(size);
+    }
 
-    	void insert_routine(PriorityRoutine<EnvType>* routine, uint32_t value){
+    void insert_routine(PriorityRoutine<EnvType>* routine, uint32_t value){
 		m_priority_rail.insert_routine(routine, value);
 	};
 
-    	void insert_routine(TimedRoutine<EnvType>* routine, uint32_t value){
+    void insert_routine(TimedRoutine<EnvType>* routine, uint32_t value){
 		m_timed_rail.insert_routine(routine, value);
 	};
 

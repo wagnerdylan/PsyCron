@@ -2,8 +2,8 @@ CXX = g++
 AVR_CXX = avr-g++
 INCLUDE = -I../src -I../src/usr -I../src/system -I../lib -I/usr/avr/include
 SRC_DIR = ../src
-FILES = test.cpp
-OBJECTS = test.o
+FILES = ../src/PsyCron.cpp test.cpp 
+OBJECTS = PsyCron.o test.o 
 
 g++_build:
 	$(CXX) -c $(FILES) $(INCLUDE)

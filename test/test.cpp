@@ -4,7 +4,7 @@
 
 //#include <iostream>
 
-#include "PsyCron.hpp"
+#include "PsyCron.hh"
 
 uint32_t get_milli(){
     return 10;
@@ -50,10 +50,10 @@ int main(){
     psycron::UIIL config;
     config.sys_milli_second = get_milli;
 
-    psycron::PsyCron psycron_ins(config);
+    psycron::PsyCron psycron_ins(config, 1);
 
     int simple_env = 42;
-
+    
     psycron::PsyTrack<int> *track_one = 
         psycron_ins.add_track<int>(0, simple_env);
 

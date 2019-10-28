@@ -1,13 +1,13 @@
 //
 // PsyCron
-// File: PsyRail.hpp
+// File: PsyRail.hh
 // Author: Dylan R. Wagner (drw6528@rit.edu)
 // Description:
 //      PsyRail header File.
 //
 
-#ifndef PSYRAIL_HPP
-#define PSYRAIL_HPP
+#ifndef PSYRAIL_HH
+#define PSYRAIL_HH
 
 #include <stdint.h>
 
@@ -37,8 +37,7 @@ public:
 protected:
 
     PsyRail(PsyTrack<EnvType>* track) :
-        m_hold_track(track)
-	{}
+        m_hold_track(track){}
 
     PsyTrack<EnvType>* m_hold_track;
     
