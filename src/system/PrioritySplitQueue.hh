@@ -13,14 +13,17 @@
 #define PARENT(x) (size_t) (x - 1) / 2
 #define START 0
 
-template <typename T, class Compare, class Allocator>
+template <typename T, class Compare, template<typename> class Allocator>
 class PrioritySplitQueue {
 public:
 
     explicit PrioritySplitQueue(size_t cap) : 
-        capacity(cap)
-    {
-        heap_array = Allocator<T>(capacity * sizeof(T));
+        capacity(cap),
+	queue_size(0),
+	non_queue_size(0)
+    {   
+	Allocator<T> allocator;
+        heap_array = allocator(capacity * sizeof(T));
     }
 
     /**
@@ -29,7 +32,7 @@ public:
      * @return the fisrt element from the priority queue
      */
     T pop_queue(){
-        if(!queue_size) return null; // If array is empty return default
+        if(!queue_size) return NULL; // If array is empty return default
 
         T root = heap_array[START];
         heap_array[START] = heap_array[queue_size - 1];
@@ -48,7 +51,7 @@ public:
      */
     T top(){
         if(queue_size > 0) return heap_array[START];
-	return null;
+	return NULL;
     }
 
     /**
@@ -99,7 +102,7 @@ public:
      * Return the size of the heap segment
      * @return size of heap segment
      */
-    size_t queue_size(){
+    size_t get_queue_size(){
         return queue_size;
     }
 
@@ -107,7 +110,7 @@ public:
      * Return the size of the non heap segement
      * @return size of non heap segment
      */
-    size_t non_queue_size(){
+    size_t get_non_queue_size(){
         return non_queue_size;
     }
 
@@ -133,8 +136,8 @@ public:
 private:
 
     // Number of current elements in the queue.
-    size_t queue_size = 0;
-    size_t non_queue_size = 0;
+    size_t queue_size;
+    size_t non_queue_size;
     size_t capacity;
 
     // Min-Heap array
@@ -150,7 +153,7 @@ private:
      *      FALSE: if size is less than capacity
      */
     bool hit_capacity(){
-        return queue_size + non_queue_size => capacity;
+        return queue_size + non_queue_size >= capacity;
     }
 
     /**
