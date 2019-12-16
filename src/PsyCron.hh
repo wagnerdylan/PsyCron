@@ -12,7 +12,6 @@
 
 #include <stdint.h>
 #include <stdlib.h>
-#include <iostream>
 
 #include "PsyRoutine.hh"
 #include "UIIL.hh"
@@ -29,15 +28,15 @@ public:
     explicit PsyCron(uint16_t track_cap):
 	    m_current_track{nullptr},
 	    m_user_parameters{},
-	    m_track_cap{track_cap},
-	    m_num_track_cnt{0}{
-            running = false;
+	    m_track_cap{track_cap}{
+
             m_rail_track = (PsyTrackBase**) psyalloc(track_cap * sizeof(PsyTrackBase*));
+
         };
     
     // Allows user implemented functions to be included into the PsyCron system
     PsyCron(UIIL user_parameters, uint16_t track_cap):
-        PsyCron(track_cap){
+        PsyCron{track_cap}{
             m_user_parameters = user_parameters;
     };
 
@@ -63,14 +62,12 @@ public:
     static void* psyalloc(size_t size){
         static size_t bytes_used = 0;
 
-        if(running || (bytes_used + size) > PSYCRON_BUFFER_SIZE){
+        if(m_running || (bytes_used + size) > PSYCRON_BUFFER_SIZE){
             abort();
         }
 
         void* ptr_to_start = (void*) &psyalloc_buffer[bytes_used];
         bytes_used += size;
-
-        std::cout << "Allocated total: " << bytes_used << " bytes" << std::endl;
 
         return ptr_to_start;
     }
@@ -83,10 +80,10 @@ private:
     UIIL m_user_parameters;
 
     // Used to block any misuse of the PsyCron system in regards to initialization
-    static bool running;
+    static bool m_running;
 
     uint16_t m_track_cap;
-    uint16_t m_num_track_cnt;
+    uint16_t m_num_track_cnt{0};
         
     static unsigned char psyalloc_buffer[];
 };

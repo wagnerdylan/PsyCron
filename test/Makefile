@@ -13,5 +13,8 @@ avr_build:
 	$(AVR_CXX) -std=c++17 -Os -c $(FILES) $(INCLUDE)
 	$(AVR_CXX) -o test.elf $(OBJECTS)
 
+g++_queue:
+	$(CXX) -o test_split_queue test_split_queue.cpp $(INCLUDE)
+
 clean:
-	rm *.o test
+	rm *.o test test_split_queue

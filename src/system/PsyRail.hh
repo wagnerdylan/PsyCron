@@ -11,7 +11,7 @@
 
 #include <stdint.h>
 
-#include "queue"
+#include "PrioritySplitQueue.hh"
 
 namespace psycron {
 

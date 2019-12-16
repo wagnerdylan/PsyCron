@@ -2,7 +2,7 @@
 #include "PsyCron.hh"
 
 namespace psycron{
-    bool PsyCron::running = false;
+    bool PsyCron::m_running = false;
     unsigned char PsyCron::psyalloc_buffer[PSYCRON_BUFFER_SIZE] = {0};
 
     void* psyalloc_key_func(size_t size){
