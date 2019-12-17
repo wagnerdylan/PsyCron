@@ -13,49 +13,99 @@
 
 namespace psycron {
 
-// Forward declaration 
+// Forward declaration
 template <class RailType, typename EnvType>
 class PsyRail;
 
-void* psyalloc_key_func(size_t size);
+template <typename EnvType>
+class PriorityPsyRail;
 
 template <typename EnvType>
-class PriorityRoutine{
+class TimedPsyRail;
 
-    friend class PsyRail<PriorityRoutine, EnvType>;
+void* psyalloc_key_func(size_t size);
+
+
+template<typename RailType, typename EnvType>
+class PsyRoutine{
 
 public:
-
-    PriorityRoutine(){};
-
+    
     inline void *operator new(size_t size){
         return psyalloc_key_func(size);
     };
 
 protected:
 
-    // Adds this routine into the priority rail inside the encapsulating track
-    //
-    // param: priority_value
-    //      The non-negative priority value. lowest(0)- greater ~ higher priority - lower priority
-    void add_this_by_priority(uint16_t priority_value);
+    /**
+     * Used to move 'this' routine to the active state. If already
+     * active, do nothing.
+     */
+    void activate_me(){
+        // @TODO
+    };
+
+    /**
+     * Used to activate another routine in the same track.
+     * 
+     * @param other_id The id of the other routine to be activated.
+     * @return true if other routine was found, false otherwise.
+     */
+    bool activate_other(uint16_t other_id){
+        // @TODO
+        return false;
+    };
+
+    /**
+     * Used to deactive 'this' routine. This routine is not possible to call
+     * if already not active.
+     */
+    void deactivate_me(){
+        // @TODO
+    };
+
+    /**
+     * Used to deactive another routine in the same track.
+     * 
+     * @param other_id The id of the other routine to be deactivated.
+     * @return true if other routine was found, false otherwise.
+     */
+    bool deactivate_other(uint16_t other_id){
+        // @TODO
+        return false;
+    };
 
 private:
 
     // virtual function called when routine is executed
     virtual void run() = 0;
 
-    PsyRail<PriorityRoutine, EnvType>* m_hold_rail;
+    PsyRail<RailType, EnvType>* m_hold_rail;
 
     // The calculated priority value
-    uint32_t m_sch_metric;
+    uint32_t m_sch_metric{0};
 
 };
 
-template <typename EnvType>
-class TimedRoutine{
 
-    friend class PsyRail<TimedRoutine, EnvType>;
+template <typename EnvType>
+class PriorityRoutine : public PsyRoutine<PriorityPsyRail<EnvType>, EnvType>{
+
+public:
+
+    PriorityRoutine(){};
+
+private:
+
+    virtual void run() = 0;
+
+    uint16_t m_priority_val{1};
+
+};
+
+
+template <typename EnvType>
+class TimedRoutine : public PsyRoutine<TimedPsyRail<EnvType>, EnvType>{
 
 public:
 
@@ -64,33 +114,16 @@ public:
 	{ // TODO check if time utils are enabled
 	}
 
-    inline void *operator new(size_t size){
-        return psyalloc_key_func(size);
-    };
-
-protected:
-
-    // Adds this routine into the timed second rail inside the encapsulating track
-    //
-    // param: milli_seconds
-    //      Time to next execution in milli seconds
-    // return:
-    //      true: if routine was successfully submitted
-    //      false: otherwise
-    bool add_this_by_milli(uint32_t milli_seconds);
-
 private:
 
-    // virtual function called when routine is executed
     virtual void run() = 0;
 
-    PsyRail<TimedRoutine, EnvType>* m_hold_rail;
-
-    // The time at which this routine is to be executed in milliseconds
-    uint32_t m_sch_metric;
-
     // The delay at which this routine is to be executed in milliseconds
-    uint32_t m_time_delay;
+    uint32_t m_time_delay{0};
+
+    // Metric which provides a loose execution time of the routine. This is used to prevent
+    // edge hogging.
+    uint16_t m_metric_execution_time{0};
 };
 
 }
