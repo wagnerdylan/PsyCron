@@ -38,14 +38,6 @@ public:
 protected:
 
     /**
-     * Used to move 'this' routine to the active state. If already
-     * active, do nothing.
-     */
-    void activate_me(){
-        // @TODO
-    };
-
-    /**
      * Used to activate another routine in the same track.
      * 
      * @param other_id The id of the other routine to be activated.
@@ -57,7 +49,7 @@ protected:
     };
 
     /**
-     * Used to deactive 'this' routine. This routine is not possible to call
+     * Used to deactivate 'this' routine. This routine is not possible to call
      * if already not active.
      */
     void deactivate_me(){
@@ -82,7 +74,7 @@ private:
 
     PsyRail<RailType, EnvType>* m_hold_rail;
 
-    // The calculated priority value
+    // Metric used by the derived routine classes for scheduling 
     uint32_t m_sch_metric{0};
 
 };
@@ -92,6 +84,13 @@ template <typename EnvType>
 class PriorityRoutine : public PsyRoutine<PriorityPsyRail<EnvType>, EnvType>{
 
 public:
+
+    class Comparator {
+    public:
+        bool operator()(PriorityRoutine<EnvType>* lhs, PriorityRoutine<EnvType>* rhs){
+            return lhs->m_sch_metric < rhs->m_sch_metric;
+        }
+    };
 
     PriorityRoutine(){};
 
@@ -108,6 +107,14 @@ template <typename EnvType>
 class TimedRoutine : public PsyRoutine<TimedPsyRail<EnvType>, EnvType>{
 
 public:
+
+    class Comparator {
+    public:
+        bool operator()(TimedRoutine<EnvType>* lhs, TimedRoutine<EnvType>* rhs){
+            // @TODO change this
+            return lhs->m_sch_metric < rhs->m_sch_metric;
+        }
+    };
 
 	TimedRoutine(uint32_t time_delay)
 	: m_time_delay(time_delay)

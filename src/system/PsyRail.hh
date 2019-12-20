@@ -11,7 +11,7 @@
 
 #include <stdint.h>
 
-#include "PrioritySplitQueue.hh"
+#include "PsyQueue.hh"
 
 namespace psycron {
 
@@ -25,14 +25,14 @@ class PriorityRoutine;
 template <typename EnvType>
 class TimedRoutine;
 
-template <class RailType, typename EnvType>
+template <class RoutineType, typename EnvType>
 class PsyRail{
 
 public:
 
     virtual void execute() = 0;
 
-    void insert_routine(RailType* routine, uint32_t value){};
+    void insert_routine(RoutineType* routine, uint32_t value){};
 
 protected:
 
@@ -41,7 +41,8 @@ protected:
 
     PsyTrack<EnvType>* m_hold_track;
     
-    //priority_queue<RailType, Comparator> sch_queue;
+    // Where all the routines live
+    PsyQueue<RoutineType, typename RoutineType::Comparator> m_sch_queue;
     
 private:
 
@@ -62,6 +63,7 @@ private:
 
 };
 
+
 template <typename EnvType>
 class PriorityPsyRail final : public PsyRail<PriorityRoutine<EnvType>, EnvType>{
 
@@ -79,6 +81,7 @@ private:
     void priority_reset(uint32_t rst_max){};
 
 };
+
 
 template <typename EnvType>
 class TimedPsyRail final : public PsyRail<TimedRoutine<EnvType>, EnvType>{
