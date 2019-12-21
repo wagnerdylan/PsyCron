@@ -85,11 +85,20 @@ private:
      * @param priority_value Used to calculate scheduling metric.
      * @return The scheduling metric.
      */
-    uint32_t process_priority(uint16_t priority_value){};
+    uint32_t process_priority(uint16_t priority_value){
+        uint32_t calc_priority_value = m_priority_cnt + priority_value * 4;
+
+        if(calc_priority_value >= UINT32_MAX){
+            priority_reset();
+            calc_priority_value = m_priority_cnt + priority_value * 4;
+        }
+
+        return calc_priority_value;
+    };
 
     /**
      * Resets the priority for every routine in the queue if a calculated priority value approches
-     * it's maximum value.
+     * it's maximum value. This function will never fail.
      */
     void priority_reset(){};
 
