@@ -44,7 +44,7 @@ protected:
     PsyTrack<EnvType>* m_hold_track;
     
     // Where all the routines are tracked
-    PsyQueue<RoutineType, typename RoutineType::Comparator> m_sch_queue;
+    PsyQueue<RoutineType> m_sch_queue;
 
 };
 
@@ -65,7 +65,16 @@ public:
      * @param routine The PriorityRoutine to be inserted.
      * @param priority_value The inital priority of the routine.
      */
-    void insert_routine(PriorityRoutine<EnvType>* routine, uint16_t priority_value){};
+    void insert_routine(PriorityRoutine<EnvType>* routine, uint16_t priority_value, bool is_active){
+        routine->m_priority_val = priority_value;
+        routine->m_sch_metric = process_priority(priority_value);
+        bool insert_success = this->m_sch_queue.push(routine, is_active);
+        
+        if(!insert_success){
+            // Critical error, cannot insert routine
+            abort();
+        }
+    };
 
 private:
 
@@ -76,7 +85,7 @@ private:
      * @param priority_value Used to calculate scheduling metric.
      * @return The scheduling metric.
      */
-    uint32_t process_priority(uint32_t priority_value){};
+    uint32_t process_priority(uint16_t priority_value){};
 
     /**
      * Resets the priority for every routine in the queue if a calculated priority value approches
@@ -98,7 +107,7 @@ public:
     explicit TimedPsyRail(PsyTrack<EnvType>* track, size_t cap) : 
         PsyRail<TimedRoutine<EnvType>, EnvType>::PsyRail{track, cap}{};
 
-    void insert_routine(TimedRoutine<EnvType>* routine, uint32_t time_delay){};
+    void insert_routine(TimedRoutine<EnvType>* routine, uint32_t time_delay, bool is_active){};
 
     /**
      * Timed rail will execute routines which are hold execution time equal to or behind the

@@ -15,15 +15,24 @@ namespace psycron
 template<typename T>
 class PsyCronAllocator;
 
-template<typename T, class Comparator>
+template<typename RoutineType>
 class PsyQueue final{
 
 public:
 
     PsyQueue(size_t cap):
-        split_queue{cap}{};
+        m_split_queue{cap}{};
 
-    PrioritySplitQueue<T*, Comparator, PsyCronAllocator > split_queue;
+    bool push(RoutineType* routine, bool is_active){
+        if(is_active){
+            return m_split_queue.push_queue(routine);
+        } else {
+            return m_split_queue.push_non_queue(routine);
+        }
+    }
+
+    // Force RoutineType to implement a nested class Comparator
+    PrioritySplitQueue<RoutineType*, typename RoutineType::Comparator, PsyCronAllocator> m_split_queue;
 };
 
 }

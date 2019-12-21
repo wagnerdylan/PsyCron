@@ -54,9 +54,11 @@ int main(){
 
     int simple_env = 42;
     
-    psycron::PsyTrack<int> *track_one = 
-        psycron_ins.add_track<int>(0, simple_env, 1, 1);
+    {
+        psycron::PsyTrack<int> *track_one = 
+            psycron_ins.add_track<int>(0, simple_env, 1, 1);
 
-    track_one->insert_routine(new TestRoutine<int>(), 0);
-    track_one->insert_routine(new TestTimedRoutine<int>(100), 0);
+        track_one->insert_routine(new TestRoutine<int>(), 0);
+        track_one->insert_routine(new TestTimedRoutine<int>(100), 0);
+    }
 }

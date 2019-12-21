@@ -61,12 +61,12 @@ public:
         return psyalloc_key_func(size);
     }
 
-    void insert_routine(PriorityRoutine<EnvType>* routine, uint16_t value){
-		m_priority_rail.insert_routine(routine, value);
+    inline void insert_routine(PriorityRoutine<EnvType>* routine, uint16_t value, bool is_active=true){
+		m_priority_rail.insert_routine(routine, value, is_active);
 	};
 
-    void insert_routine(TimedRoutine<EnvType>* routine, uint32_t value){
-		m_timed_rail.insert_routine(routine, value);
+    inline void insert_routine(TimedRoutine<EnvType>* routine, uint32_t value, bool is_active=true){
+		m_timed_rail.insert_routine(routine, value, is_active);
 	};
 
 	inline EnvType* get_environment(){

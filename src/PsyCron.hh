@@ -107,7 +107,7 @@ class PsyCronAllocator {
         T* operator()(size_t size){
             return (T*) psyalloc_key_func(size);
         }
-    };
+};
 
 
 }
