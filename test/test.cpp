@@ -2,12 +2,16 @@
 // Created by Dylan Wagner on 8/1/18.
 //
 
-//#include <iostream>
+#include <iostream>
 
 #include "PsyCron.hh"
 
 uint32_t get_milli(){
     return 10;
+}
+
+void msg_printer(char* msg){
+    std::cout << msg << std::endl;
 }
 
 template <typename EnvType>
@@ -49,6 +53,7 @@ int main(){
 
     psycron::UIIL config;
     config.sys_milli_second = get_milli;
+    config.sys_send_msg = msg_printer;
 
     psycron::PsyCron psycron_ins(config, 1);
 

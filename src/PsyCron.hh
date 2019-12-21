@@ -12,10 +12,21 @@
 
 #include <stdint.h>
 #include <stdlib.h>
+#include <string.h>
 
 #include "PsyRoutine.hh"
 #include "UIIL.hh"
 #include "PsyTrack.hh"
+#include "Codes.hh"
+
+
+#define EASSERT(expr, error_code) \
+    if (expr) \
+        psycron::PsyCron::assert_fail(#error_code, error_code)
+
+#ifdef NDEBUG 
+#define EASSERT(expr, error_code) /* nothing */
+#endif
 
 namespace psycron {
 
@@ -27,7 +38,6 @@ public:
  
     explicit PsyCron(uint16_t track_cap):
 	    m_current_track{nullptr},
-	    m_user_parameters{},
 	    m_track_cap{track_cap}{
 
             m_rail_track = (PsyTrackBase**) psyalloc(track_cap * sizeof(PsyTrackBase*));
@@ -35,9 +45,9 @@ public:
         };
     
     // Allows user implemented functions to be included into the PsyCron system
-    PsyCron(UIIL user_parameters, uint16_t track_cap):
+    PsyCron(UIIL user_parameters_arg, uint16_t track_cap):
         PsyCron{track_cap}{
-            m_user_parameters = user_parameters;
+            user_parameters = user_parameters_arg;
     };
 
     // Executes one routine within the current track
@@ -73,7 +83,9 @@ public:
     static void* psyalloc(size_t size){
         static size_t bytes_used = 0;
 
-        if(m_running || (bytes_used + size) > PSYCRON_BUFFER_SIZE){
+        if(running || (bytes_used + size) > PSYCRON_BUFFER_SIZE){
+            EASSERT(running, errCANNOT_ALLOCATE_MEMORY_AFTER_INIT);
+            EASSERT((bytes_used + size) > PSYCRON_BUFFER_SIZE, errOUT_OF_ARENA_MEMORY);
             abort();
         }
 
@@ -83,15 +95,28 @@ public:
         return ptr_to_start;
     }
 
+    static void assert_fail(const char* error_name, const char* error_string){
+
+        if(user_parameters.sys_send_msg){
+            // Codes will always be < 253 chars in length
+            char buffer[256];
+            strcpy(buffer, error_name);
+            strcat(buffer, ": ");
+            strcat(buffer, error_string);
+
+            user_parameters.sys_send_msg(buffer);
+        }
+    }
+
 private:
 
     PsyTrackBase* m_current_track;
     PsyTrackBase** m_rail_track;
 
-    UIIL m_user_parameters;
+    static UIIL user_parameters;
 
     // Used to block any misuse of the PsyCron system in regards to initialization
-    static bool m_running;
+    static bool running;
 
     uint16_t m_track_cap;
     uint16_t m_num_track_cnt{0};

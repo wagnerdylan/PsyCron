@@ -13,7 +13,7 @@
 namespace psycron {
 
 typedef struct UIIL{
-    uint32_t(*sys_micro_second)();
+
     uint32_t(*sys_milli_second)();
 
     void*(*sys_drop_core_clock)();
@@ -24,8 +24,7 @@ typedef struct UIIL{
 
     // Init these values to zero so we know they havent been implemented yet.
     UIIL()
-        : sys_micro_second{0}
-        , sys_milli_second{0}
+        : sys_milli_second{0}
         , sys_drop_core_clock{0}
         , sys_raise_core_clock{0}
         , sys_send_msg{0}
