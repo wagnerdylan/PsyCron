@@ -12,6 +12,7 @@ g++_build:
 avr_build:
 	$(AVR_CXX) -DPSYCRON_BUFFER_SIZE=1000 -std=c++17 -Os -c $(FILES) $(INCLUDE)
 	$(AVR_CXX) -o test.elf $(OBJECTS)
+	avr-objcopy -j .text -j .data -O ihex test.elf test.hex
 
 g++_queue:
 	$(CXX) -o test_split_queue test_split_queue.cpp $(INCLUDE)
