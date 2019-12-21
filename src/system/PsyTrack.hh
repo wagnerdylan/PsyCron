@@ -48,8 +48,8 @@ public:
 		uint16_t id, 
 		EnvType&& global_env, 
 		PsyCron* os, 
-		size_t priority_size, 
-		size_t timed_size
+		uint16_t priority_size, 
+		uint16_t timed_size
 	) :
 		PsyTrackBase{os, id},
 		m_priority_rail{this, priority_size},
@@ -61,12 +61,12 @@ public:
         return psyalloc_key_func(size);
     }
 
-    inline void insert_routine(PriorityRoutine<EnvType>* routine, uint16_t value, bool is_active=true){
-		m_priority_rail.insert_routine(routine, value, is_active);
+    inline void insert_routine(PriorityRoutine<EnvType>* routine, uint16_t id, uint16_t value, bool is_active=true){
+		m_priority_rail.insert_routine(routine, id, value, is_active);
 	};
 
-    inline void insert_routine(TimedRoutine<EnvType>* routine, uint32_t value, bool is_active=true){
-		m_timed_rail.insert_routine(routine, value, is_active);
+    inline void insert_routine(TimedRoutine<EnvType>* routine, uint16_t id, uint32_t value, bool is_active=true){
+		m_timed_rail.insert_routine(routine, id, value, is_active);
 	};
 
 	inline EnvType* get_environment(){

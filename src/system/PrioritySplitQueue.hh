@@ -10,14 +10,14 @@
 
 #define LCHILD(x) 2 * x + 1
 #define RCHILD(x) 2 * x + 2
-#define PARENT(x) (size_t) (x - 1) / 2
+#define PARENT(x) (uint16_t) (x - 1) / 2
 #define START 0
 
 template <typename T, class Compare, template<typename> class Allocator>
 class PrioritySplitQueue {
 public:
 
-    explicit PrioritySplitQueue(size_t cap) : 
+    explicit PrioritySplitQueue(uint16_t cap) : 
         capacity(cap),
 	queue_size(0),
 	non_queue_size(0)
@@ -94,7 +94,7 @@ public:
      * @return
      *      Size of priority queue.
      */
-    size_t size(){
+    uint16_t size(){
         return queue_size + non_queue_size;
     }
 
@@ -102,7 +102,7 @@ public:
      * Return the size of the heap segment
      * @return size of heap segment
      */
-    size_t get_queue_size(){
+    uint16_t get_queue_size(){
         return queue_size;
     }
 
@@ -110,7 +110,7 @@ public:
      * Return the size of the non heap segement
      * @return size of non heap segment
      */
-    size_t get_non_queue_size(){
+    uint16_t get_non_queue_size(){
         return non_queue_size;
     }
 
@@ -136,9 +136,9 @@ public:
 private:
 
     // Number of current elements in the queue.
-    size_t queue_size;
-    size_t non_queue_size;
-    size_t capacity;
+    uint16_t queue_size;
+    uint16_t non_queue_size;
+    uint16_t capacity;
 
     // Min-Heap array
     T* heap_array;
@@ -163,7 +163,7 @@ private:
      * @param s2
      *      second element index
      */
-    void swap(const size_t s1, const size_t s2){
+    void swap(const uint16_t s1, const uint16_t s2){
         T temp = heap_array[s1];
         heap_array[s1] = heap_array[s2];
         heap_array[s2] = temp;
@@ -174,7 +174,7 @@ private:
      *
      * @param dec_cnt index to start the sift up operation
      */
-    void sift_up(size_t dec_cnt){
+    void sift_up(uint16_t dec_cnt){
         
 	while (dec_cnt > 0 && compare(heap_array[dec_cnt], heap_array[PARENT(dec_cnt)])){
             swap(dec_cnt, PARENT(dec_cnt));
@@ -187,11 +187,11 @@ private:
      *
      * @param cnt starting index for sift down heap operation
      */
-    void sift_down(size_t cnt){
+    void sift_down(uint16_t cnt){
         
         while (cnt < queue_size){
 
-            size_t lchild = cnt, rchild = cnt;
+            uint16_t lchild = cnt, rchild = cnt;
 
             if(LCHILD(cnt) < queue_size) lchild = LCHILD(cnt);
             if(RCHILD(cnt) < queue_size) rchild = RCHILD(cnt);

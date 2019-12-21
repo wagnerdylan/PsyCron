@@ -35,6 +35,8 @@ public:
         return psyalloc_key_func(size);
     };
 
+    uint16_t m_id;
+
 protected:
 
     /**
@@ -95,8 +97,6 @@ public:
         }
     };
 
-    PriorityRoutine(){};
-
 private:
 
     using PsyRoutine<PriorityPsyRail<EnvType>, EnvType>::m_sch_metric;
@@ -123,11 +123,6 @@ public:
             return lhs->m_sch_metric < rhs->m_sch_metric;
         }
     };
-
-	TimedRoutine(uint32_t time_delay)
-	: m_time_delay(time_delay)
-	{ // TODO check if time utils are enabled
-	}
 
 private:
 
