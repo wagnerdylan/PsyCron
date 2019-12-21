@@ -12,6 +12,8 @@
 #include <stdint.h>
 
 #include "PsyQueue.hh"
+#include "Codes.hh"
+#include "Macros.hh"
 
 namespace psycron {
 
@@ -70,10 +72,7 @@ public:
         routine->m_sch_metric = process_priority(priority_value);
         bool insert_success = this->m_sch_queue.push(routine, is_active);
         
-        if(!insert_success){
-            // Critical error, cannot insert routine
-            abort();
-        }
+        EASSERT_ABORT(!insert_success, errFAILED_TO_INSERT_ROUTINE);
     };
 
 private:

@@ -18,15 +18,7 @@
 #include "UIIL.hh"
 #include "PsyTrack.hh"
 #include "Codes.hh"
-
-
-#define EASSERT(expr, error_code) \
-    if (expr) \
-        psycron::PsyCron::assert_fail(#error_code, error_code)
-
-#ifdef NDEBUG 
-#define EASSERT(expr, error_code) /* nothing */
-#endif
+#include "Macros.hh"
 
 namespace psycron {
 
@@ -60,6 +52,9 @@ public:
         size_t priority_size, 
         size_t timed_size
     ){
+
+        EASSERT_ABORT(m_num_track_cnt == m_track_cap, errTRACK_COUNT_EXCEED_CAPACITY);
+
         PsyTrack<EnvType>* track = 
             new PsyTrack<EnvType>(
                 id,
@@ -125,6 +120,8 @@ private:
 };
 
 void* psyalloc_key_func(size_t size);
+
+void assert_fail_key_func(const char* error_name, const char* error_string);
 
 template<typename T>
 class PsyCronAllocator {
