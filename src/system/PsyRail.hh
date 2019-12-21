@@ -25,6 +25,9 @@ class PriorityRoutine;
 template <typename EnvType>
 class TimedRoutine;
 
+/**
+ * PsyRail interface.
+ */
 template <class RoutineType, typename EnvType>
 class PsyRail{
 
@@ -32,34 +35,16 @@ public:
 
     virtual void execute() = 0;
 
-    void insert_routine(RoutineType* routine, uint32_t value){};
-
 protected:
 
-    PsyRail(PsyTrack<EnvType>* track) :
-        m_hold_track(track){}
+    PsyRail(PsyTrack<EnvType>* track, size_t cap) :
+        m_hold_track{track},
+        m_sch_queue{cap}{}
 
     PsyTrack<EnvType>* m_hold_track;
     
-    // Where all the routines live
+    // Where all the routines are tracked
     PsyQueue<RoutineType, typename RoutineType::Comparator> m_sch_queue;
-    
-private:
-
-    /** 
-     * Overridable function designed to handle scheduling metrics
-     *
-     * @param value The priority multiplier set by the user
-     * @return A calculated priority value
-     */
-    virtual uint32_t process_value(uint32_t value) = 0;
-
-    /**
-     * Fixes overflowed Routines within the rail
-     *
-     * @param rst_max The current max value to be reset
-     */
-    virtual void priority_reset(uint32_t rst_max) = 0;
 
 };
 
@@ -69,16 +54,38 @@ class PriorityPsyRail final : public PsyRail<PriorityRoutine<EnvType>, EnvType>{
 
 public:
 
-    PriorityPsyRail(PsyTrack<EnvType>* track) : 
-        PsyRail<PriorityRoutine<EnvType>, EnvType>::PsyRail{track}{};
+    explicit PriorityPsyRail(PsyTrack<EnvType>* track, size_t cap) : 
+        PsyRail<PriorityRoutine<EnvType>, EnvType>::PsyRail{track, cap}{};
 
     void execute(){};
+    
+    /**
+     * Inserts a PriorityRoutine into the PsyQueue, setting the appropiate inital fields.
+     * 
+     * @param routine The PriorityRoutine to be inserted.
+     * @param priority_value The inital priority of the routine.
+     */
+    void insert_routine(PriorityRoutine<EnvType>* routine, uint16_t priority_value){};
 
 private:
 
-    uint32_t process_value(uint32_t value){};
+    /**
+     * Used to calculate the value to be used to schedule the PriorityRoutine on insertion and 
+     * on every reschedule after execution.
+     * 
+     * @param priority_value Used to calculate scheduling metric.
+     * @return The scheduling metric.
+     */
+    uint32_t process_priority(uint32_t priority_value){};
 
-    void priority_reset(uint32_t rst_max){};
+    /**
+     * Resets the priority for every routine in the queue if a calculated priority value approches
+     * it's maximum value.
+     */
+    void priority_reset(){};
+
+    // Used to keep new routines from blocking other routines.
+    uint32_t m_priority_cnt{0};
 
 };
 
@@ -88,8 +95,10 @@ class TimedPsyRail final : public PsyRail<TimedRoutine<EnvType>, EnvType>{
 
 public:
 
-    TimedPsyRail(PsyTrack<EnvType>* track) : 
-        PsyRail<TimedRoutine<EnvType>, EnvType>::PsyRail{track}{};
+    explicit TimedPsyRail(PsyTrack<EnvType>* track, size_t cap) : 
+        PsyRail<TimedRoutine<EnvType>, EnvType>::PsyRail{track, cap}{};
+
+    void insert_routine(TimedRoutine<EnvType>* routine, uint32_t time_delay){};
 
     /**
      * Timed rail will execute routines which are hold execution time equal to or behind the
@@ -100,10 +109,9 @@ public:
 
 private:
 
-    uint32_t process_value(uint32_t value){};
+    uint32_t process_delay(uint32_t time_delay){};
 
-    void priority_reset(uint32_t rst_max){};
-
+    void time_reset(){};
 };
 
 }

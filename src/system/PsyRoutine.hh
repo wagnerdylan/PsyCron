@@ -67,21 +67,24 @@ protected:
         return false;
     };
 
-private:
-
-    // virtual function called when routine is executed
-    virtual void run() = 0;
 
     PsyRail<RailType, EnvType>* m_hold_rail;
 
     // Metric used by the derived routine classes for scheduling 
     uint32_t m_sch_metric{0};
+    
+private:
+
+    // virtual function called when routine is executed
+    virtual void run() = 0;
 
 };
 
 
 template <typename EnvType>
 class PriorityRoutine : public PsyRoutine<PriorityPsyRail<EnvType>, EnvType>{
+
+friend class PriorityPsyRail<EnvType>;
 
 public:
 
@@ -96,6 +99,9 @@ public:
 
 private:
 
+    using PsyRoutine<PriorityPsyRail<EnvType>, EnvType>::m_sch_metric;
+    using PsyRoutine<PriorityPsyRail<EnvType>, EnvType>::m_hold_rail;
+
     virtual void run() = 0;
 
     uint16_t m_priority_val{1};
@@ -105,6 +111,8 @@ private:
 
 template <typename EnvType>
 class TimedRoutine : public PsyRoutine<TimedPsyRail<EnvType>, EnvType>{
+
+friend class TimedPsyRail<EnvType>;
 
 public:
 
@@ -122,6 +130,9 @@ public:
 	}
 
 private:
+
+    using PsyRoutine<TimedPsyRail<EnvType>, EnvType>::m_sch_metric;
+    using PsyRoutine<TimedPsyRail<EnvType>, EnvType>::m_hold_rail;
 
     virtual void run() = 0;
 

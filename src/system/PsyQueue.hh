@@ -7,12 +7,23 @@
  *      functionality. 
  */
 
+#include "PrioritySplitQueue.hh"
+
 namespace psycron
 {
 
-template<typename T, class Compare>
-class PsyQueue{
-    // @TODO
+template<typename T>
+class PsyCronAllocator;
+
+template<typename T, class Comparator>
+class PsyQueue final{
+
+public:
+
+    PsyQueue(size_t cap):
+        split_queue{cap}{};
+
+    PrioritySplitQueue<T*, Comparator, PsyCronAllocator > split_queue;
 };
 
 }

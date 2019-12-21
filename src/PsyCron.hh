@@ -44,9 +44,20 @@ public:
     void execute();
 
     template<typename EnvType>
-    PsyTrack<EnvType>* add_track(size_t id, EnvType& global_env){
+    PsyTrack<EnvType>* add_track(
+        uint16_t id, 
+        EnvType& global_env, 
+        size_t priority_size, 
+        size_t timed_size
+    ){
         PsyTrack<EnvType>* track = 
-            new PsyTrack<EnvType>(id, (EnvType&&) global_env, this);
+            new PsyTrack<EnvType>(
+                id,
+                (EnvType&&) global_env, 
+                this, 
+                priority_size, 
+                timed_size
+            );
         m_rail_track[m_num_track_cnt++] = track;
 
         return track;
@@ -66,7 +77,7 @@ public:
             abort();
         }
 
-        void* ptr_to_start = (void*) &psyalloc_buffer[bytes_used];
+        void* ptr_to_start = (void*) &psycron_arena[bytes_used];
         bytes_used += size;
 
         return ptr_to_start;
@@ -85,10 +96,19 @@ private:
     uint16_t m_track_cap;
     uint16_t m_num_track_cnt{0};
         
-    static unsigned char psyalloc_buffer[];
+    static unsigned char psycron_arena[];
 };
 
 void* psyalloc_key_func(size_t size);
+
+template<typename T>
+class PsyCronAllocator {
+    public:
+        T* operator()(size_t size){
+            return (T*) psyalloc_key_func(size);
+        }
+    };
+
 
 }
 

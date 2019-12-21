@@ -22,14 +22,14 @@ class PsyTrackBase{
 
 public:
 
-	PsyTrackBase(PsyCron* os, size_t id) :
+	PsyTrackBase(PsyCron* os, uint16_t id) :
 		m_hold_os{os},
 		m_id{id}
 		{}
 
 	UIIL* get_uiil();
 
-	size_t m_id;
+	uint16_t m_id;
 
 private:
 
@@ -44,10 +44,16 @@ class PsyTrack final: public PsyTrackBase{
 
 public:
 
-	PsyTrack(size_t id, EnvType&& global_env, PsyCron* os) :
+	PsyTrack(
+		uint16_t id, 
+		EnvType&& global_env, 
+		PsyCron* os, 
+		size_t priority_size, 
+		size_t timed_size
+	) :
 		PsyTrackBase{os, id},
-		m_priority_rail{this},
-		m_timed_rail{this},
+		m_priority_rail{this, priority_size},
+		m_timed_rail{this, timed_size},
 		m_global_env{global_env}
 		{}
 
@@ -55,7 +61,7 @@ public:
         return psyalloc_key_func(size);
     }
 
-    void insert_routine(PriorityRoutine<EnvType>* routine, uint32_t value){
+    void insert_routine(PriorityRoutine<EnvType>* routine, uint16_t value){
 		m_priority_rail.insert_routine(routine, value);
 	};
 
