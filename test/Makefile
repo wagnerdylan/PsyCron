@@ -6,11 +6,11 @@ FILES = ../src/PsyCron.cpp test.cpp
 OBJECTS = PsyCron.o test.o 
 
 g++_build:
-	$(CXX) -c $(FILES) $(INCLUDE)
+	$(CXX) -DPSYCRON_BUFFER_SIZE=1000 -c $(FILES) $(INCLUDE)
 	$(CXX) -o test $(OBJECTS) 
 
 avr_build:
-	$(AVR_CXX) -std=c++17 -Os -c $(FILES) $(INCLUDE)
+	$(AVR_CXX) -DPSYCRON_BUFFER_SIZE=1000 -std=c++17 -Os -c $(FILES) $(INCLUDE)
 	$(AVR_CXX) -o test.elf $(OBJECTS)
 
 g++_queue:

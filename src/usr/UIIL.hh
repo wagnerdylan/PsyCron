@@ -10,9 +10,6 @@
 #ifndef PROJECT_UIIL_HH
 #define PROJECT_UIIL_HH
 
-// !CHANGE THIS! Set this define to a value large enough to hold all PsyCron objects
-#define PSYCRON_BUFFER_SIZE 1000
-
 namespace psycron {
 
 typedef struct UIIL{
