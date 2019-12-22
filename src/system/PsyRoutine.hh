@@ -36,6 +36,8 @@ public:
     };
 
     uint16_t m_id;
+    
+    bool m_is_active;
 
 protected:
 
@@ -55,7 +57,7 @@ protected:
      * if already not active.
      */
     void deactivate_me(){
-        // @TODO
+        m_is_active = false;
     };
 
     /**

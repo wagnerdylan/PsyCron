@@ -18,11 +18,11 @@ class PrioritySplitQueue {
 public:
 
     explicit PrioritySplitQueue(uint16_t cap) : 
-        capacity(cap),
-	queue_size(0),
-	non_queue_size(0)
+        capacity{cap},
+        queue_size{0},
+        non_queue_size{0}
     {   
-	Allocator<T> allocator;
+	    Allocator<T> allocator;
         heap_array = allocator(capacity * sizeof(T));
     }
 
@@ -51,7 +51,7 @@ public:
      */
     T top(){
         if(queue_size > 0) return heap_array[START];
-	return NULL;
+	    return NULL;
     }
 
     /**
@@ -70,7 +70,7 @@ public:
 
         queue_size += 1;
 
-	return true;
+	    return true;
     }
 
     /**
@@ -81,12 +81,12 @@ public:
      */
     bool push_non_queue(T element){
 	
-	if (hit_capacity()) return false;
+        if (hit_capacity()) return false;
 
-	non_queue_size += 1;
-	heap_array[capacity - non_queue_size] = element;
+        non_queue_size += 1;
+        heap_array[capacity - non_queue_size] = element;
 
-	return true;
+	    return true;
     }
 
     /**
@@ -107,21 +107,15 @@ public:
     }
 
     /**
-     * Return the size of the non heap segement
+     * Return the size of the non heap segment
      * @return size of non heap segment
      */
     uint16_t get_non_queue_size(){
         return non_queue_size;
     }
 
-    /**
-     * Set default to be returned from pop() when queue_size is 0,
-     * this is optional
-     * @param default_T
-     *      The default value
-     */
-    void set_default(T default_T){
-        heap_array[0] = default_T;
+    uint16_t get_capacity(){
+        return capacity;
     }
 
     /**
@@ -134,17 +128,6 @@ public:
     }
 
 private:
-
-    // Number of current elements in the queue.
-    uint16_t queue_size;
-    uint16_t non_queue_size;
-    uint16_t capacity;
-
-    // Min-Heap array
-    T* heap_array;
-
-    // Compare object for two objects
-    Compare compare;
 
     /**
      * Checks if heap has hit max size.
@@ -209,4 +192,15 @@ private:
         }
 
     }
+
+    // Number of current elements in the queue.
+    uint16_t queue_size;
+    uint16_t non_queue_size;
+    uint16_t capacity;
+
+    // Min-Heap array
+    T* heap_array;
+
+    // Compare object for two objects
+    Compare compare;
 };

@@ -42,7 +42,7 @@ public:
 private:
 
     void run(){
-        int i = 10;
+        int i = get_some_val();
     }
 };
 
@@ -60,7 +60,7 @@ int main(){
         psycron::PsyTrack<int> *track_one = 
             psycron_ins.add_track<int>(0, simple_env, 1, 1);
 
-        track_one->insert_routine(new TestRoutine<int>(), uint16_t{0}, 10);
-        track_one->insert_routine(new TestTimedRoutine<int>(), uint16_t{1}, 100);
+        track_one->insert_routine(new TestRoutine<int>{}, uint16_t{0}, 10);
+        track_one->insert_routine(new TestTimedRoutine<int>{}, uint16_t{1}, 100);
     }
 }

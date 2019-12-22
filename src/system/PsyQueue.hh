@@ -15,15 +15,15 @@ namespace psycron
 template<typename T>
 class PsyCronAllocator;
 
+struct FindResult{
+    bool was_found{false};
+    uint16_t index{0};
+};
+
 template<typename RoutineType>
 class PsyQueue final{
 
 public:
-
-    struct FindResult{
-        bool was_found{false};
-        uint16_t index{0};
-    };
 
     PsyQueue(uint16_t cap):
         m_split_queue{cap}{};
@@ -48,8 +48,6 @@ public:
     // Force RoutineType to implement a nested class Comparator
     PrioritySplitQueue<RoutineType*, typename RoutineType::Comparator, PsyCronAllocator> m_split_queue;
 
-private:
-
     /**
      * Finds a routine in the queue with the provided id.
      * 
@@ -59,7 +57,7 @@ private:
     FindResult find_active(const uint16_t id){
         FindResult result{};
 
-        for(int16_t i = 0; i < m_split_queue.queue_size; i++){
+        for(uint16_t i = 0; i < m_split_queue.queue_size; i++){
             if(m_split_queue.peek_heap()[i]->m_id == id){
                 result.was_found = true;
                 result.index = i;
@@ -70,10 +68,25 @@ private:
         return result;
     }
 
+    /**
+     * Finds a routine in the non queue with the provided id.
+     * 
+     * @param id The id of the routine to be found.
+     * @return A struct contiaing the results of the search.
+     */ 
     FindResult find_non_active(const uint16_t id){
         FindResult result{};
 
-        // @TODO
+        for(uint16_t i = m_split_queue.get_capacity() - 1; 
+            i >= m_split_queue.get_capacity() - m_split_queue.get_non_queue_size(); 
+            i--
+        ){
+            if(m_split_queue.peek_heap()[i]->m_id == id){
+                result.was_found = true;
+                result.index = i;
+                break;
+            }
+        }
 
         return result;
     }

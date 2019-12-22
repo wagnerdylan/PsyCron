@@ -41,7 +41,29 @@ protected:
 
     PsyRail(PsyTrack<EnvType>* track, uint16_t cap) :
         m_hold_track{track},
-        m_sch_queue{cap}{}
+        m_sch_queue{cap}
+    {}
+
+    inline bool deactivate_routine(uint16_t id){
+        // @TODO call method in track which tries to deactivate in all rails
+        return false;
+    }
+
+    /**
+     * Used to deactivate a routine in the heap if it can be found there.
+     * 
+     * @param id Id of the routine to be deactivated.
+     * @return True if requested routine to be deactivated can be found, false otherwise.
+     */
+    bool deactivate_rail_routine(uint16_t id){
+        FindResult find_result = m_sch_queue.find_active(id);
+
+        if(find_result.was_found){
+            // @TODO Good call pop method in sch_queue then push non queue method in sch_queue
+        }
+
+        return find_result.was_found;
+    }
 
     PsyTrack<EnvType>* m_hold_track;
     
@@ -70,6 +92,7 @@ public:
     void insert_routine(PriorityRoutine<EnvType>* routine, uint16_t id, uint16_t priority_value, bool is_active){
         routine->m_priority_val = priority_value;
         routine->m_id = id;
+        routine->m_is_active = is_active;
         routine->m_sch_metric = process_priority(priority_value);
         bool insert_success = this->m_sch_queue.push(routine, is_active);
         
