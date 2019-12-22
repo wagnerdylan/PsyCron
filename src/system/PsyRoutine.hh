@@ -36,7 +36,7 @@ public:
     };
 
     uint16_t m_id;
-    
+
     bool m_is_active;
 
 protected:
@@ -54,14 +54,15 @@ protected:
 
     /**
      * Used to deactivate 'this' routine. This routine is not possible to call
-     * if already not active.
+     * if already not active. When this routine is rescheduled, setting the is_active
+     * flag to false will cause this routine to be placed into non heap.
      */
     void deactivate_me(){
         m_is_active = false;
     };
 
     /**
-     * Used to deactive another routine in the same track.
+     * Used to deactivate another routine in the same track.
      * 
      * @param other_id The id of the other routine to be deactivated.
      * @return true if other routine was found, false otherwise.
