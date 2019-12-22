@@ -54,6 +54,7 @@ public:
     ){
 
         EASSERT_ABORT(m_num_track_cnt == m_track_cap, errTRACK_COUNT_EXCEED_CAPACITY);
+        EASSERT_ABORT(!user_parameters.sys_milli_second && timed_size, errMILLI_SECOND_USER_CONFIG_MISSING);
 
         PsyTrack<EnvType>* track = 
             new PsyTrack<EnvType>(
@@ -103,12 +104,12 @@ public:
         }
     }
 
+    static UIIL user_parameters;
+
 private:
 
     PsyTrackBase* m_current_track;
     PsyTrackBase** m_rail_track;
-
-    static UIIL user_parameters;
 
     // Used to block any misuse of the PsyCron system in regards to initialization
     static bool running;

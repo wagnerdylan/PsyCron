@@ -13,8 +13,9 @@
 
 namespace psycron {
 
-class PsyCron;
 class UIIL;
+
+class PsyCron;
 
 void* psyalloc_key_func(size_t size);
 
@@ -31,11 +32,13 @@ public:
 
 	uint16_t m_id;
 
+protected:
+
+	PsyCron* m_hold_os;
+
 private:
 
 	virtual void execute() = 0;
-
-	PsyCron* m_hold_os;
 
 };
 
@@ -50,12 +53,12 @@ public:
 		PsyCron* os, 
 		uint16_t priority_size, 
 		uint16_t timed_size
-	) :
-		PsyTrackBase{os, id},
-		m_priority_rail{this, priority_size},
-		m_timed_rail{this, timed_size},
-		m_global_env{global_env}
-		{}
+	)
+	  : PsyTrackBase{os, id}
+	  ,	m_priority_rail{this, priority_size}
+	  ,	m_timed_rail{this, timed_size}
+	  ,	m_global_env{global_env}
+	{}
 
 	inline void *operator new(size_t size){
         return psyalloc_key_func(size);

@@ -1,4 +1,6 @@
 
+#pragma once
+
 namespace psycron {
 
 void assert_fail_key_func(const char* error_name, const char* error_string);
