@@ -20,14 +20,17 @@ class TestRoutine : public psycron::PriorityRoutine<EnvType>
 public:
 
     int16_t get_some_val(){
-        return(221);
+        return ++some_val_cnt;
     }
 
 private:
 
     void run(){
-        int i = 10;
+        int16_t some_val = get_some_val();
+        std::cout << "Routine " << this->m_id << " some val: " << some_val << std::endl;
     }
+
+    int16_t some_val_cnt{0};
 };
 
 template <typename EnvType>
@@ -60,7 +63,10 @@ int main(){
         psycron::PsyTrack<int> *track_one = 
             psycron_ins.add_track<int>(0, simple_env, 1, 1);
 
-        track_one->insert_routine(new TestRoutine<int>{}, uint16_t{0}, 10);
+        track_one->insert_routine(new TestRoutine<int>{}, uint16_t{203}, 10);
         track_one->insert_routine(new TestTimedRoutine<int>{}, uint16_t{1}, 100);
     }
+
+    // Blocking call
+    psycron_ins.execute();
 }

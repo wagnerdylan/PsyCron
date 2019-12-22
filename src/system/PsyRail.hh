@@ -81,7 +81,24 @@ public:
     explicit PriorityPsyRail(PsyTrack<EnvType>* track, uint16_t cap) : 
         PsyRail<PriorityRoutine<EnvType>, EnvType>::PsyRail{track, cap}{};
 
-    void execute(){};
+    /**
+     * Executes the top routine on the priority queue, setting and rescheduling 
+     * the routine.
+     */
+    void execute(){
+        PriorityRoutine<EnvType>* current_routine = this->m_sch_queue.m_split_queue.pop_queue();
+        
+        if(current_routine != nullptr){
+            // Call run on routine, push back into PsyQueue
+            current_routine->run();
+            current_routine->m_sch_metric = process_priority(current_routine->m_priority_val);
+            // A push in this context is guaranteed to never fail. 
+            this->m_sch_queue.push(current_routine, current_routine->m_is_active);
+
+            m_priority_cnt += 1;
+        }
+
+    };
     
     /**
      * Inserts a PriorityRoutine into the PsyQueue, setting the appropiate inital fields.
@@ -89,11 +106,11 @@ public:
      * @param routine The PriorityRoutine to be inserted.
      * @param priority_value The inital priority of the routine.
      */
-    void insert_routine(PriorityRoutine<EnvType>* routine, uint16_t id, uint16_t priority_value, bool is_active){
-        routine->m_priority_val = priority_value;
+    void insert_routine(PriorityRoutine<EnvType>* routine, uint16_t id, uint16_t priority_val, bool is_active){
+        routine->m_priority_val = priority_val;
         routine->m_id = id;
         routine->m_is_active = is_active;
-        routine->m_sch_metric = process_priority(priority_value);
+        routine->m_sch_metric = process_priority(routine->m_priority_val);
         bool insert_success = this->m_sch_queue.push(routine, is_active);
         
         EASSERT_ABORT(!insert_success, errFAILED_TO_INSERT_ROUTINE);
@@ -113,6 +130,7 @@ private:
 
         if(calc_priority_value >= UINT32_MAX){
             priority_reset();
+            // This is the same calculation as above
             calc_priority_value = m_priority_cnt + priority_value * 4;
         }
 

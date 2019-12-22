@@ -24,8 +24,6 @@ namespace psycron {
 
 class PsyCron {
 
-    friend class PsyTrackBase;
-
 public:
  
     explicit PsyCron(uint16_t track_cap):
@@ -43,7 +41,17 @@ public:
     };
 
     // Executes one routine within the current track
-    void execute();
+    void execute(){
+        validate_state();
+        
+        if(m_current_track == nullptr){
+            m_current_track = m_rail_track[0];
+        }
+
+        while(true){
+            m_current_track->execute();
+        }
+    }
 
     template<typename EnvType>
     PsyTrack<EnvType>* add_track(
@@ -107,6 +115,10 @@ public:
     static UIIL user_parameters;
 
 private:
+
+    void validate_state(){
+        //@TODO check state just before first execution, fail on any violators.
+    }
 
     PsyTrackBase* m_current_track;
     PsyTrackBase** m_rail_track;

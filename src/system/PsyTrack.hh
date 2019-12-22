@@ -21,6 +21,8 @@ void* psyalloc_key_func(size_t size);
 
 class PsyTrackBase{
 
+friend class PsyCron;
+
 public:
 
 	PsyTrackBase(PsyCron* os, uint16_t id) :
@@ -78,7 +80,10 @@ public:
 
 private:
 
-	void execute(){};
+	void execute(){
+		// Do priority, timed rail swapping
+		m_priority_rail.execute();
+	};
 
 	EnvType m_global_env;
 
