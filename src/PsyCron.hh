@@ -43,7 +43,8 @@ public:
     // Executes one routine within the current track
     void execute(){
         validate_state();
-        
+        running = true;
+
         if(m_current_track == nullptr){
             m_current_track = m_rail_track[0];
         }
@@ -53,24 +54,22 @@ public:
         }
     }
 
-    template<typename EnvType>
+    template<typename EnvType, typename ... Args>
     PsyTrack<EnvType>* add_track(
         uint16_t id, 
         EnvType& global_env, 
-        size_t priority_size, 
-        size_t timed_size
+        Args ... args
     ){
 
-        EASSERT_ABORT(m_num_track_cnt == m_track_cap, errTRACK_COUNT_EXCEED_CAPACITY);
-        EASSERT_ABORT(!user_parameters.sys_milli_second && timed_size, errMILLI_SECOND_USER_CONFIG_MISSING);
+        //EASSERT_ABORT(m_num_track_cnt == m_track_cap, errTRACK_COUNT_EXCEED_CAPACITY);
+        //EASSERT_ABORT(!user_parameters.sys_milli_second && timed_size, errMILLI_SECOND_USER_CONFIG_MISSING);
 
         PsyTrack<EnvType>* track = 
             new PsyTrack<EnvType>(
                 id,
                 (EnvType&&) global_env, 
                 this, 
-                priority_size, 
-                timed_size
+                args...
             );
         m_rail_track[m_num_track_cnt++] = track;
 

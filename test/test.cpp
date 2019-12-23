@@ -60,11 +60,12 @@ int main(){
     int simple_env = 42;
     
     {
-        psycron::PsyTrack<int> *track_one = 
-            psycron_ins.add_track<int>(0, simple_env, 1, 1);
+        psycron_ins.add_track(
+            0, simple_env,
+            psycron::PsyTrack<int>::PriorityRoutineArgs{new TestRoutine<int>{}, uint16_t{203}, 10},
+            psycron::PsyTrack<int>::TimedRoutineArgs{new TestTimedRoutine<int>{}, uint16_t{1}, 100}
+        );
 
-        track_one->insert_routine(new TestRoutine<int>{}, uint16_t{203}, 10);
-        track_one->insert_routine(new TestTimedRoutine<int>{}, uint16_t{1}, 100);
     }
 
     // Blocking call
