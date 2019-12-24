@@ -131,12 +131,16 @@ private:
      * @return The scheduling metric.
      */
     uint32_t process_priority(uint16_t priority_value){
-        uint32_t calc_priority_value = m_priority_cnt + priority_value * 4;
+
+        // Handle special condition
+        if(priority_value == 0) return uint32_t{0};
+
+        uint32_t calc_priority_value = m_priority_cnt + priority_value * 2;
 
         if(calc_priority_value >= UINT32_MAX){
             priority_reset();
             // This is the same calculation as above
-            calc_priority_value = m_priority_cnt + priority_value * 4;
+            calc_priority_value = m_priority_cnt + priority_value * 2;
         }
 
         return calc_priority_value;
