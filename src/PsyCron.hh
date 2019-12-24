@@ -55,14 +55,11 @@ public:
     }
 
     template<typename EnvType, typename ... Args>
-    PsyTrack<EnvType>* add_track(
+    void add_application(
         uint16_t id, 
         EnvType& global_env, 
         Args ... args
     ){
-
-        // @TODO fix this
-        //EASSERT_ABORT(!user_parameters.sys_milli_second && timed_size, errMILLI_SECOND_USER_CONFIG_MISSING);
 
         PsyTrack<EnvType>* track = 
             new PsyTrack<EnvType>(
@@ -73,7 +70,6 @@ public:
             );
         m_rail_track[m_num_track_cnt++] = track;
 
-        return track;
     }
 
     /**
@@ -111,7 +107,9 @@ public:
         }
     }
 
-    static UIIL user_parameters;
+    UIIL& get_user_parameters(){
+        return user_parameters;
+    };
 
 private:
 
@@ -129,6 +127,8 @@ private:
     uint16_t m_num_track_cnt{0};
         
     static unsigned char psycron_arena[];
+    
+    static UIIL user_parameters;
 };
 
 void* psyalloc_key_func(size_t size);

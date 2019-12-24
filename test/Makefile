@@ -2,8 +2,8 @@ CXX = g++
 AVR_CXX = avr-g++
 INCLUDE = -I../src -I../src/usr -I../src/system -I../lib -I/usr/avr/include
 SRC_DIR = ../src
-FILES = ../src/PsyCron.cpp test.cpp 
-OBJECTS = PsyCron.o test.o 
+FILES = ../src/PsyCron.cpp ../src/system/PsyTrack.cpp test.cpp 
+OBJECTS = PsyCron.o PsyTrack.o test.o 
 
 g++_build:
 	$(CXX) -DPSYCRON_BUFFER_SIZE=1000 -c $(FILES) $(INCLUDE)

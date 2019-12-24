@@ -50,7 +50,7 @@ TODO
 
 ### Tracks
 
-A track in PsyCron is an execution environment. Tracks hold the necessary utility to facilitate the handling of routines within PsyCron. A Track also provides a way to store a mutable environment which can be accessed by all routines executing in under it. 
+A track in PsyCron is an application. Tracks hold the necessary utility to facilitate the handling of routines within PsyCron. A Track also provides a way to store a mutable environment which can be accessed by all routines executing in under it. 
 
 ```
 TODO add track creation example

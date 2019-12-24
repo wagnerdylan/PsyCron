@@ -10,10 +10,11 @@
 #define PSYTRACK_HH
 
 #include "PsyRail.hh"
+#include "UIIL.hh"
+#include "Codes.hh"
+#include "Macros.hh"
 
 namespace psycron {
-
-class UIIL;
 
 class PsyCron;
 
@@ -30,9 +31,9 @@ public:
 		m_id{id}
 		{}
 
-	UIIL* get_uiil();
-
 	uint16_t m_id;
+
+	UIIL& get_user_parameters();
 
 protected:
 
@@ -139,6 +140,7 @@ private:
 	};
 
 	void insert_routine(TimedRoutineArgs arg){
+		EASSERT_ABORT(!this->get_user_parameters().sys_milli_second, errMILLI_SECOND_USER_CONFIG_MISSING);
 		m_timed_rail.insert_routine(arg.m_routine, arg.m_id, arg.m_value, arg.m_is_active);
 	};
 
