@@ -27,10 +27,10 @@ private:
 
     void run(){
         int16_t some_val = get_some_val();
-        std::cout << "Routine " << this->id_ << " some val: " << some_val
-            << " Envrionment: " << ++this->get_envrionment() << std::endl;
+        std::cout << "Routine " << this->_id << " some val: " << some_val
+            << " Envrionment: " << ++this->_get_envrionment() << std::endl;
 
-        //if(some_val > 10000) this->deactivate_me();
+        //if(some_val > 10000) this->_deactivate_me();
     }
 
     int16_t some_val_cnt{0};

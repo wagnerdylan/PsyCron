@@ -58,7 +58,7 @@ public:
         FindResult result{};
 
         for(uint16_t i = 0; i < m_split_queue.queue_size; i++){
-            if(m_split_queue.peek_heap()[i]->id_ == id){
+            if(m_split_queue.peek_heap()[i]->_id == id){
                 result.was_found = true;
                 result.index = i;
                 break;
@@ -81,7 +81,7 @@ public:
             i >= m_split_queue.get_capacity() - m_split_queue.get_non_queue_size(); 
             i--
         ){
-            if(m_split_queue.peek_heap()[i]->id_ == id){
+            if(m_split_queue.peek_heap()[i]->_id == id){
                 result.was_found = true;
                 result.index = i;
                 break;

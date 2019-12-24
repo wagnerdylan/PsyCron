@@ -35,9 +35,9 @@ public:
         return psyalloc_key_func(size);
     };
 
-    uint16_t id_;
+    uint16_t _id;
 
-    bool is_active_;
+    bool _is_active;
 
 protected:
 
@@ -47,7 +47,7 @@ protected:
      * @param other_id The id of the other routine to be activated.
      * @return true if other routine was found, false otherwise.
      */
-    bool activate_other(uint16_t other_id){
+    bool _activate_other(uint16_t other_id){
         // @TODO
         return false;
     };
@@ -57,8 +57,8 @@ protected:
      * if already not active. When this routine is rescheduled, setting the is_active
      * flag to false will cause this routine to be placed into non heap.
      */
-    void deactivate_me(){
-        is_active_ = false;
+    void _deactivate_me(){
+        _is_active = false;
     };
 
     /**
@@ -67,12 +67,12 @@ protected:
      * @param other_id The id of the other routine to be deactivated.
      * @return true if other routine was found, false otherwise.
      */
-    bool deactivate_other(uint16_t other_id){
+    bool _deactivate_other(uint16_t other_id){
         // @TODO
         return false;
     };
 
-    EnvType& get_envrionment(){
+    EnvType& _get_envrionment(){
         return m_hold_rail->get_envrionment();
     }
 
