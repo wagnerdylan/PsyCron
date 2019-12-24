@@ -35,9 +35,9 @@ public:
         return psyalloc_key_func(size);
     };
 
-    uint16_t m_id;
+    uint16_t id_;
 
-    bool m_is_active;
+    bool is_active_;
 
 protected:
 
@@ -58,7 +58,7 @@ protected:
      * flag to false will cause this routine to be placed into non heap.
      */
     void deactivate_me(){
-        m_is_active = false;
+        is_active_ = false;
     };
 
     /**

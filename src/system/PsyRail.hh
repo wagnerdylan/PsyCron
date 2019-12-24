@@ -97,7 +97,7 @@ public:
             current_routine->run();
             current_routine->m_sch_metric = process_priority(current_routine->m_priority_val);
             // A push in this context is guaranteed to never fail. 
-            this->m_sch_queue.push(current_routine, current_routine->m_is_active);
+            this->m_sch_queue.push(current_routine, current_routine->is_active_);
 
             m_priority_cnt += 1;
         }
@@ -113,8 +113,8 @@ public:
     void insert_routine(PriorityRoutine<EnvType>* routine, uint16_t id, uint16_t priority_val, bool is_active){
         routine->m_hold_rail = this;
         routine->m_priority_val = priority_val;
-        routine->m_id = id;
-        routine->m_is_active = is_active;
+        routine->id_ = id;
+        routine->is_active_ = is_active;
         routine->m_sch_metric = process_priority(routine->m_priority_val);
         bool insert_success = this->m_sch_queue.push(routine, is_active);
         
