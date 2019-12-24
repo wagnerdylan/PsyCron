@@ -72,8 +72,11 @@ protected:
         return false;
     };
 
+    EnvType& get_envrionment(){
+        return m_hold_rail->get_envrionment();
+    }
 
-    PsyRail<RailType, EnvType>* m_hold_rail;
+    RailType* m_hold_rail;
 
     // Metric used by the derived routine classes for scheduling 
     uint32_t m_sch_metric{0};

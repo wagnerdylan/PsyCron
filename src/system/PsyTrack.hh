@@ -87,14 +87,6 @@ public:
 		bool m_is_active;
 	};
 
-	inline void *operator new(size_t size){
-        return psyalloc_key_func(size);
-    };
-
-	inline EnvType* get_environment(){
-		return &m_global_env;
-	};
-
 	template<typename ... Args>
 	PsyTrack(
 		uint16_t id, 
@@ -109,6 +101,14 @@ public:
 	{
 		insert_routine(args...);
 	}
+
+	inline void *operator new(size_t size){
+        return psyalloc_key_func(size);
+    };
+
+	EnvType& get_environment(){
+		return m_global_env;
+	};
 
 private:
 

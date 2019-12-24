@@ -27,7 +27,8 @@ private:
 
     void run(){
         int16_t some_val = get_some_val();
-        std::cout << "Routine " << this->m_id << " some val: " << some_val << std::endl;
+        std::cout << "Routine " << this->m_id << " some val: " << some_val
+            << " Envrionment: " << ++this->get_envrionment() << std::endl;
     }
 
     int16_t some_val_cnt{0};
@@ -51,7 +52,7 @@ private:
 
 int main(){
 
-    psycron::UIIL config;
+    psycron::UIIL config{};
     config.sys_milli_second = get_milli;
     config.sys_send_msg = msg_printer;
 
@@ -59,14 +60,12 @@ int main(){
 
     int simple_env = 42;
     
-    {
-        psycron_ins.add_track(
-            0, simple_env,
-            psycron::PsyTrack<int>::PriorityRoutineArgs{new TestRoutine<int>{}, uint16_t{203}, 10},
-            psycron::PsyTrack<int>::TimedRoutineArgs{new TestTimedRoutine<int>{}, uint16_t{1}, 100}
-        );
-
-    }
+    psycron_ins.add_track(
+        0, 
+        simple_env,
+        psycron::PsyTrack<int>::PriorityRoutineArgs{new TestRoutine<int>{}, uint16_t{203}, 10},
+        psycron::PsyTrack<int>::TimedRoutineArgs{new TestTimedRoutine<int>{}, uint16_t{1}, 100}
+    );
 
     // Blocking call
     psycron_ins.execute();

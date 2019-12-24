@@ -61,7 +61,7 @@ public:
         Args ... args
     ){
 
-        //EASSERT_ABORT(m_num_track_cnt == m_track_cap, errTRACK_COUNT_EXCEED_CAPACITY);
+        // @TODO fix this
         //EASSERT_ABORT(!user_parameters.sys_milli_second && timed_size, errMILLI_SECOND_USER_CONFIG_MISSING);
 
         PsyTrack<EnvType>* track = 

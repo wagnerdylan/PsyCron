@@ -37,6 +37,10 @@ public:
 
     virtual void execute() = 0;
 
+    EnvType& get_envrionment(){
+        return m_hold_track->get_environment();
+    }
+
 protected:
 
     PsyRail(PsyTrack<EnvType>* track, uint16_t cap) :
@@ -107,6 +111,7 @@ public:
      * @param priority_value The inital priority of the routine.
      */
     void insert_routine(PriorityRoutine<EnvType>* routine, uint16_t id, uint16_t priority_val, bool is_active){
+        routine->m_hold_rail = this;
         routine->m_priority_val = priority_val;
         routine->m_id = id;
         routine->m_is_active = is_active;
