@@ -40,8 +40,10 @@ public:
             user_parameters = user_parameters_arg;
     };
 
-    // Executes one routine within the current track
-    void execute(){
+    /**
+     * Starts execution of routines within the psycron system. This call will block forever.
+     */
+    void start(){
         validate_state();
         running = true;
 

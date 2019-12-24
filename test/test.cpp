@@ -71,5 +71,5 @@ int main(){
     );
 
     // Blocking call
-    psycron_ins.execute();
+    psycron_ins.start();
 }

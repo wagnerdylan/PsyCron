@@ -76,9 +76,11 @@ protected:
         return m_hold_rail->get_envrionment();
     }
 
+    // Redefined as private in derived class
     RailType* m_hold_rail;
 
-    // Metric used by the derived routine classes for scheduling 
+    // Metric used by the derived routine classes for scheduling
+    // Redefined as private in derived class
     uint32_t m_sch_metric{0};
     
 private:
