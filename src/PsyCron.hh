@@ -45,6 +45,7 @@ public:
      */
     void start(){
         validate_state();
+        init_system();
         running = true;
 
         if(m_current_track == nullptr){
@@ -117,6 +118,10 @@ private:
 
     void validate_state(){
         //@TODO check state just before first execution, fail on any violators.
+    }
+
+    void init_system(){
+        // @TODO Call init on everything
     }
 
     PsyTrackBase* m_current_track;

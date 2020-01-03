@@ -33,7 +33,7 @@ private:
         //if(some_val > 10000) this->_deactivate_me();
     }
 
-    int16_t some_val_cnt{0};
+    int16_t some_val_cnt{0};  
 };
 
 template <typename EnvType>

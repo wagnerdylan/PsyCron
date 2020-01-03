@@ -137,7 +137,7 @@ private:
 
         uint32_t calc_priority_value = m_priority_cnt + priority_value * 2;
 
-        if(calc_priority_value >= UINT32_MAX){
+        if(calc_priority_value >= 100){//UINT32_MAX){
             priority_reset();
             // This is the same calculation as above
             calc_priority_value = m_priority_cnt + priority_value * 2;
@@ -148,9 +148,25 @@ private:
 
     /**
      * Resets the priority for every routine in the queue if a calculated priority value approches
-     * it's maximum value. This function will never fail.
+     * it's maximum value.
      */
-    void priority_reset(){};
+    void priority_reset(){
+        
+        if(this->m_sch_queue.m_split_queue.get_queue_size() == 0){
+            m_priority_cnt = 0;
+            return;
+        }
+
+        PriorityRoutine<EnvType>* top_routine = this->m_sch_queue.m_split_queue.top();
+        // Wait till we get a routine which isn't a special case.
+        if(top_routine->m_sch_metric == 0) return;
+
+        for(uint16_t i{0}; i < this->m_sch_queue.m_split_queue.get_queue_size(); i++){
+            this->m_sch_queue.m_split_queue.peek_heap()[i]->m_sch_metric -= top_routine->m_sch_metric;
+        }
+
+        m_priority_cnt = 0;
+    };
 
     // Used to keep new routines from blocking other routines.
     uint32_t m_priority_cnt{0};
