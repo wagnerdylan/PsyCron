@@ -39,6 +39,7 @@ public:
 
     bool _is_active;
 
+// Protected methods are exposed as part of the PsyCron API
 protected:
 
     /**
@@ -48,8 +49,7 @@ protected:
      * @return true if other routine was found, false otherwise.
      */
     bool _activate_other(uint16_t other_id){
-        // @TODO
-        return false;
+        return m_hold_rail->deactivate_rail_routine(other_id);
     };
 
     /**

@@ -32,7 +32,7 @@ public:
 
             m_rail_track = (PsyTrackBase**) psyalloc(track_cap * sizeof(PsyTrackBase*));
 
-        };
+    };
     
     // Allows user implemented functions to be included into the PsyCron system
     PsyCron(UIIL user_parameters_arg, uint16_t track_cap):
@@ -57,6 +57,13 @@ public:
         }
     }
 
+    /**
+     * Adds an application into the PsyCron system atomically.
+     * 
+     * @param id The id of the routine.
+     * @param global_env The application envrionment.
+     * @param args Varadict function parameter containing the routines to be added into the application.
+     */
     template<typename EnvType, typename ... Args>
     void add_application(
         uint16_t id, 
