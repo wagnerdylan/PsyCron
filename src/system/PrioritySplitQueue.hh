@@ -74,6 +74,17 @@ public:
     }
 
     /**
+     * Removes a object at the specified index from the queue section. 
+     * 
+     * @param index The index of the object to be removed.
+     * @return The object or null if the index is out of range.
+     */
+    T remove_queue(uint16_t index){
+        // @ TODO
+        return NULL;
+    }
+
+    /**
      * Push a element onto the non queue segment
      *
      * @param element The element to be inserted.
@@ -87,6 +98,17 @@ public:
         heap_array[capacity - non_queue_size] = element;
 
 	    return true;
+    }
+
+    /**
+     * Removes the object at the specified index.
+     * 
+     * @param index The index of the object to be removed.
+     * @return The object, or null if the index is out of range.
+     */
+    T remove_non_queue(uint16_t index){
+        // @TODO
+        return NULL;
     }
 
     /**
@@ -159,10 +181,10 @@ private:
      */
     void sift_up(uint16_t dec_cnt){
         
-	while (dec_cnt > 0 && compare(heap_array[dec_cnt], heap_array[PARENT(dec_cnt)])){
-            swap(dec_cnt, PARENT(dec_cnt));
-            dec_cnt = PARENT(dec_cnt);
-        }
+        while (dec_cnt > 0 && compare(heap_array[dec_cnt], heap_array[PARENT(dec_cnt)])){
+                swap(dec_cnt, PARENT(dec_cnt));
+                dec_cnt = PARENT(dec_cnt);
+            }
     }
     
     /**

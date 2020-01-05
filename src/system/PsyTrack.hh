@@ -111,6 +111,34 @@ public:
 		return m_global_env;
 	};
 
+	/**
+	 * Attempts to activate the specifed routine in fist the priority rail, then
+	 * the timed rail.
+	 * 
+	 * @param id The id of the routine to be activated.
+	 * @return True on success, false on failure.
+	 */
+	bool activate_routine(uint16_t id){
+		if(m_priority_rail.activate_rail_routine(id)) return true;
+		if(m_timed_rail.activate_routine(id)) return true;
+
+		return false;
+	}
+
+	/**
+	 * Attempts to deactivate the specifed routine in fist the priority rail, then
+	 * the timed rail.
+	 * 
+	 * @param id The id of the routine to be activated.
+	 * @return True on success, false on failure.
+	 */
+	bool deactivate_routine(uint16_t id){
+		if(m_priority_rail.deactivate_rail_routine(id)) return true;
+		if(m_timed_rail.deactivate_routine(id)) return true;
+
+		return false;
+	}
+
 private:
 
 	struct ArgCount{

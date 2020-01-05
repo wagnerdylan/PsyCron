@@ -49,8 +49,11 @@ protected:
     {}
 
     inline bool deactivate_routine(uint16_t id){
-        // @TODO call method in track which tries to deactivate in all rails
-        return false;
+        return m_hold_track->deactivate_routine(id);
+    }
+
+    inline bool activate_routine(uint16_t id){
+        return m_hold_track->activate_routine(id);
     }
 
     /**
@@ -63,7 +66,31 @@ protected:
         FindResult find_result = m_sch_queue.find_active(id);
 
         if(find_result.was_found){
-            // @TODO Good call pop method in sch_queue then push non queue method in sch_queue
+            RoutineType* routine = m_sch_queue.m_split_queue.remove_queue(find_result.index);
+            if(routine == nullptr) return false;
+            
+            routine->_is_active = false;
+            schedule_routine(routine);
+        }
+
+        return find_result.was_found;
+    }
+
+    /**
+     * Used to activeate a routine in the non_heap if it can be found there.
+     * 
+     * @param id ID of the routine to be deactivated.
+     * @return True if requested routine to be activated can be found, false otherwise.
+     */
+    bool activate_rail_routine(uint16_t id){
+        FindResult find_result = m_sch_queue.find_non_active(id);
+
+        if(find_result.was_found){
+            RoutineType* routine = m_sch_queue.m_split_queue.remove_non_queue(find_result.index);
+            if(routine == nullptr) return false;
+
+            routine->_is_active = true;
+            schedule_routine(routine);
         }
 
         return find_result.was_found;
@@ -73,6 +100,10 @@ protected:
     
     // Where all the routines are tracked
     PsyQueue<RoutineType> m_sch_queue;
+
+private:
+
+    virtual void schedule_routine(RoutineType* routine) = 0;
 
 };
 
@@ -95,9 +126,7 @@ public:
         if(current_routine != nullptr){
             // Call run on routine, push back into PsyQueue
             current_routine->run();
-            current_routine->m_sch_metric = process_priority(current_routine->m_priority_val);
-            // A push in this context is guaranteed to never fail. 
-            this->m_sch_queue.push(current_routine, current_routine->_is_active);
+            schedule_routine(current_routine);
 
             m_priority_cnt += 1;
         }
@@ -122,6 +151,17 @@ public:
     };
 
 private:
+
+    /**
+     * Schedules a routine, inserting into the queue.
+     * 
+     * @param routine The routine to be scheduled.
+     */
+    void schedule_routine(PriorityRoutine<EnvType>* routine){
+        routine->m_sch_metric = process_priority(routine->m_priority_val);
+        // A push in this context is guaranteed to never fail. 
+        this->m_sch_queue.push(routine, routine->_is_active);
+    }
 
     /**
      * Used to calculate the value to be used to schedule the PriorityRoutine on insertion and 
@@ -192,6 +232,15 @@ public:
     void execute(){};
 
 private:
+
+    /**
+     * Schedules a routine, inserting into the queue.
+     * 
+     * @param routine The routine to be scheduled.
+     */
+    void schedule_routine(TimedRoutine<EnvType>* routine){
+        // @ TODO
+    };
 
     uint32_t process_delay(uint32_t time_delay){};
 

@@ -49,7 +49,7 @@ protected:
      * @return true if other routine was found, false otherwise.
      */
     bool _activate_other(uint16_t other_id){
-        return m_hold_rail->deactivate_rail_routine(other_id);
+        return m_hold_rail->activate_routine(other_id);
     };
 
     /**
@@ -68,8 +68,7 @@ protected:
      * @return true if other routine was found, false otherwise.
      */
     bool _deactivate_other(uint16_t other_id){
-        // @TODO
-        return false;
+        return m_hold_rail->deactivate_routine(other_id);
     };
 
     EnvType& _get_envrionment(){

@@ -54,7 +54,7 @@ public:
     FindResult find_active(const uint16_t id){
         FindResult result{};
 
-        for(uint16_t i = 0; i < m_split_queue.get_queue_size(); i++){
+        for(uint16_t i{0}; i < m_split_queue.get_queue_size(); i++){
             if(m_split_queue.peek_heap()[i]->_id == id){
                 result.was_found = true;
                 result.index = i;
