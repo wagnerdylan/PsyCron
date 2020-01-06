@@ -77,7 +77,7 @@ protected:
     }
 
     /**
-     * Used to activeate a routine in the non_heap if it can be found there.
+     * Used to activate a routine in the non_heap if it can be found there.
      * 
      * @param id ID of the routine to be deactivated.
      * @return True if requested routine to be activated can be found, false otherwise.
@@ -245,6 +245,10 @@ private:
     uint32_t process_delay(uint32_t time_delay){};
 
     void time_reset(){};
+
+    uint32_t m_last_time_offset{0};
+
+    uint32_t m_last_time_pulled{0};
 };
 
 }
