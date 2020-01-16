@@ -295,7 +295,7 @@ private:
     void schedule_routine(TimedRoutine<EnvType>* routine){
         // Take the runtime of the routine and convert it into a metric used to help
         // schedule timed tasks.
-        uint16_t routine_runtime_metric = (uint16_t) process_time();
+        uint8_t routine_runtime_metric = (uint8_t) process_time() * 0.01;
 
         routine->m_metric_execution_time = routine_runtime_metric;
         routine->m_sch_metric = m_last_time_pulled;

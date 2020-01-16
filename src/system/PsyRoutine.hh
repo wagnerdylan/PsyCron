@@ -145,7 +145,7 @@ private:
 
     // Metric which provides a loose execution time of the routine. This is used to prevent
     // edge hogging.
-    uint16_t m_metric_execution_time{0};
+    uint8_t m_metric_execution_time{0};
 };
 
 }
