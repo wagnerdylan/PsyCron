@@ -88,7 +88,7 @@ public:
 
         return find_result.was_found;
     }
-    
+
 protected:
 
     PsyRail(PsyTrack<EnvType>* track, uint16_t cap) :
@@ -239,14 +239,25 @@ private:
      * @param routine The routine to be scheduled.
      */
     void schedule_routine(TimedRoutine<EnvType>* routine){
-        // @ TODO
+        process_time();
+        routine->m_sch_metric = m_last_time_pulled;
+        routine->m_at_reset = m_reset_cnt;
+        // A push in this context is guaranteed to never fail. 
+        this->m_sch_queue.push(routine, routine->_is_active);
     };
 
-    uint32_t process_delay(uint32_t time_delay){};
+    void process_time(){
+        uint32_t current_time = this->m_hold_track->get_user_parameters().sys_milli_second();
 
-    void time_reset(){};
+        // User defined millisecond function was reset
+        if(current_time < m_last_time_pulled){
+            reset_cnt += 1;
+        }
 
-    uint32_t m_last_time_offset{0};
+        m_last_time_pulled = current_time;
+    }
+
+    uint16_t m_reset_cnt{0};
 
     uint32_t m_last_time_pulled{0};
 };

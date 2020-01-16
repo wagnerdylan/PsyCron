@@ -140,6 +140,8 @@ private:
 
     // The delay at which this routine is to be executed in milliseconds
     uint32_t m_time_delay{0};
+    // Used for scheduling, handles issues with user defined time function resetting. 
+    uint16_t m_at_reset{0};
 
     // Metric which provides a loose execution time of the routine. This is used to prevent
     // edge hogging.
