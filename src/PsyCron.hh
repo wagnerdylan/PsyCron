@@ -16,7 +16,7 @@
 
 #include "system/PsyRoutine.hh"
 #include "UIIL.hh"
-#include "PsyTrack.hh"
+#include "system/PsyTrack.hh"
 #include "Codes.hh"
 #include "Macros.hh"
 
