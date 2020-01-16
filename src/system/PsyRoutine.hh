@@ -126,8 +126,13 @@ public:
     class Comparator {
     public:
         bool operator()(TimedRoutine<EnvType>* lhs, TimedRoutine<EnvType>* rhs){
-            // @TODO change this
-            return lhs->m_sch_metric < rhs->m_sch_metric;
+            if(lhs->m_at_reset != rhs->m_at_reset){
+                 // @TODO handle this
+                 return false;
+            }
+
+            return uint64_t{lhs->m_sch_metric + lhs->m_time_delay + lhs->m_metric_execution_time} <
+                uint64_t{rhs->m_sch_metric + rhs->m_time_delay + rhs->m_metric_execution_time};
         }
     };
 
