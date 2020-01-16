@@ -3,11 +3,23 @@
 //
 
 #include <iostream>
+#include <chrono>
 
 #include "PsyCron.hh"
 
 uint32_t get_milli(){
-    return 10;
+    static std::chrono::milliseconds startup_time;
+    static bool startup_set{false};
+    auto now = std::chrono::system_clock::now();
+
+    if(!startup_set){
+        startup_time = std::chrono::duration_cast<std::chrono::milliseconds>(now.time_since_epoch());
+        startup_set = true;
+    }
+
+    auto ms_now = std::chrono::duration_cast<std::chrono::milliseconds>(now.time_since_epoch());
+    //std::cout << "Time: " << (ms_now - startup_time).count() << std::endl;
+    return (ms_now - startup_time).count();
 }
 
 void msg_printer(char* msg){
@@ -54,7 +66,8 @@ public:
 private:
 
     void run(){
-        int i = get_some_val();
+        std::cout << "Routine " << this->_id
+            << " Envrionment: " << ++this->_get_envrionment() << std::endl;
     }
 };
 
@@ -73,7 +86,7 @@ int main(){
         simple_env, // Application envrionment 
         psycron::PsyTrack<int>::PriorityRoutineArgs{new TestRoutine<int>{}, uint16_t{200}, 1},
         psycron::PsyTrack<int>::PriorityRoutineArgs{new TestRoutine<int>{}, uint16_t{201}, 2},
-        psycron::PsyTrack<int>::TimedRoutineArgs{new TestTimedRoutine<int>{}, uint16_t{1}, 100}
+        psycron::PsyTrack<int>::TimedRoutineArgs{new TestTimedRoutine<int>{}, uint16_t{1}, 1000}
     );
 
     // Blocking call

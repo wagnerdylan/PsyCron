@@ -121,14 +121,21 @@ public:
      * the routine.
      */
     void execute(){
-        PriorityRoutine<EnvType>* current_routine = this->m_sch_queue.m_split_queue.pop_queue();
+        PriorityRoutine<EnvType>* current_routine = this->m_sch_queue.m_split_queue.top();
         
-        if(current_routine != nullptr){
+        while(current_routine != nullptr){
             // Call run on routine, push back into PsyQueue
             current_routine->run();
+            this->m_sch_queue.m_split_queue.pop_queue();
             schedule_routine(current_routine);
 
             m_priority_cnt += 1;
+
+            current_routine = this->m_sch_queue.m_split_queue.top();
+
+            // Only execute again if there is a 0 priority routine.
+            if(current_routine != nullptr && current_routine->m_sch_metric != 0)
+                return;
         }
 
     };
@@ -144,10 +151,7 @@ public:
         routine->m_priority_val = priority_val;
         routine->_id = id;
         routine->_is_active = is_active;
-        routine->m_sch_metric = process_priority(routine->m_priority_val);
-        bool insert_success = this->m_sch_queue.push(routine, is_active);
-        
-        EASSERT_ABORT(!insert_success, errFAILED_TO_INSERT_ROUTINE);
+        schedule_routine(routine);
     };
 
 private:
@@ -173,7 +177,10 @@ private:
     uint32_t process_priority(uint16_t priority_value){
 
         // Handle special condition
-        if(priority_value == 0) return uint32_t{0};
+        if(priority_value == 0){
+            this->m_hold_track->m_handle_max_priority = true;
+            return uint32_t{0};
+        }
 
         uint32_t calc_priority_value = m_priority_cnt + priority_value * 2;
 
@@ -222,16 +229,63 @@ public:
     explicit TimedPsyRail(PsyTrack<EnvType>* track, uint16_t cap) : 
         PsyRail<TimedRoutine<EnvType>, EnvType>::PsyRail{track, cap}{};
 
-    void insert_routine(TimedRoutine<EnvType>* routine, uint16_t id, uint32_t time_delay, bool is_active){};
+    /**
+     * Inserts a TimedRoutine into the queue, setting the appropiate fields.
+     * 
+     * @param routine The routine to be inserted.
+     * @param id The id to be bound to the routine.
+     * @param time_delay The delay in milliseconds.
+     * @param is_active Used to set the inital state of the rotuine.
+     */
+    void insert_routine(TimedRoutine<EnvType>* routine, uint16_t id, uint32_t time_delay, bool is_active){
+        routine->m_hold_rail = this;
+        routine->m_time_delay = time_delay;
+        routine->_id = id;
+        routine->_is_active = is_active;
+        routine->m_sch_metric = m_last_time_pulled;
+        routine->m_at_reset = m_reset_cnt;
+        // A push in this context is guaranteed to never fail. 
+        this->m_sch_queue.push(routine, routine->_is_active);
+    };
 
     /**
      * Timed rail will execute routines which are hold execution time equal to or behind the
      * actual system time. This is done so timed routines don't miss execution deadlines by
      * significant margins.
      */
-    void execute(){};
+    void execute(){
+        process_time();
+
+        TimedRoutine<EnvType>* current_routine = this->m_sch_queue.m_split_queue.top();
+        
+        // Keep executing routines till we cannot anymore
+        while(
+            current_routine != nullptr &&
+            !this->m_hold_track->m_handle_max_priority &&
+            should_run_routine(current_routine)
+        ){
+            // Call run on routine, push back into PsyQueue
+            current_routine->run();
+            this->m_sch_queue.m_split_queue.pop_queue(); // Remove old routine
+            
+            schedule_routine(current_routine);
+
+            current_routine = this->m_sch_queue.m_split_queue.top();
+        }
+        
+    };
 
 private:
+
+    inline bool should_run_routine(TimedRoutine<EnvType>* routine){
+        if(routine->m_at_reset < m_reset_cnt){
+            return uint64_t{routine->m_sch_metric + routine->m_time_delay} <= 
+                uint64_t{UINT32_MAX + m_last_time_pulled};
+        }
+
+        // It's possible for the addition to hit the max value of a UINT32, this is fine for this context.
+        return uint32_t{routine->m_sch_metric + routine->m_time_delay} <= m_last_time_pulled;
+    }
 
     /**
      * Schedules a routine, inserting into the queue.
@@ -239,22 +293,35 @@ private:
      * @param routine The routine to be scheduled.
      */
     void schedule_routine(TimedRoutine<EnvType>* routine){
-        process_time();
+        // Take the runtime of the routine and convert it into a metric used to help
+        // schedule timed tasks.
+        uint16_t routine_runtime_metric = (uint16_t) process_time();
+
+        routine->m_metric_execution_time = routine_runtime_metric;
         routine->m_sch_metric = m_last_time_pulled;
         routine->m_at_reset = m_reset_cnt;
         // A push in this context is guaranteed to never fail. 
         this->m_sch_queue.push(routine, routine->_is_active);
     };
 
-    void process_time(){
+    /**
+     * Used to handle updating the system time from the user supplied milli time function.
+     * 
+     * @return The time delta between last system time and current time.
+     */
+    uint32_t process_time(){
         uint32_t current_time = this->m_hold_track->get_user_parameters().sys_milli_second();
+        uint32_t time_delta = current_time - m_last_time_pulled;
 
         // User defined millisecond function was reset
         if(current_time < m_last_time_pulled){
-            reset_cnt += 1;
+            m_reset_cnt += 1;
+            time_delta = (UINT32_MAX - m_last_time_pulled) + current_time;
         }
 
         m_last_time_pulled = current_time;
+
+        return time_delta;
     }
 
     uint16_t m_reset_cnt{0};

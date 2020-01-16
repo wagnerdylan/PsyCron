@@ -139,6 +139,9 @@ public:
 		return false;
 	}
 
+	// Used to stop execution in the timed rail
+	bool m_handle_max_priority{false};
+
 private:
 
 	struct ArgCount{
@@ -153,8 +156,9 @@ private:
 	};
 
 	void execute(){
-		// @TODO Do priority, timed rail swapping
 		m_priority_rail.execute();
+		m_handle_max_priority = false;
+		m_timed_rail.execute();
 	};
 
 	void insert_routine(PriorityRoutineArgs arg){
