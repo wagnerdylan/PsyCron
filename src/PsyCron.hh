@@ -14,7 +14,7 @@
 #include <stdlib.h>
 #include <string.h>
 
-#include "PsyRoutine.hh"
+#include "system/PsyRoutine.hh"
 #include "UIIL.hh"
 #include "PsyTrack.hh"
 #include "Codes.hh"
