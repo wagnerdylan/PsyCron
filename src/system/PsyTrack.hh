@@ -120,7 +120,7 @@ public:
 	 */
 	bool activate_routine(uint16_t id){
 		if(m_priority_rail.activate_rail_routine(id)) return true;
-		if(m_timed_rail.activate_routine(id)) return true;
+		if(m_timed_rail.activate_rail_routine(id)) return true;
 
 		return false;
 	}
@@ -134,7 +134,7 @@ public:
 	 */
 	bool deactivate_routine(uint16_t id){
 		if(m_priority_rail.deactivate_rail_routine(id)) return true;
-		if(m_timed_rail.deactivate_routine(id)) return true;
+		if(m_timed_rail.deactivate_rail_routine(id)) return true;
 
 		return false;
 	}

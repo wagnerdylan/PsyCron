@@ -30,7 +30,13 @@ private:
         std::cout << "Routine " << this->_id << " some val: " << some_val
             << " Envrionment: " << ++this->_get_envrionment() << std::endl;
 
-        //if(some_val > 10000) this->_deactivate_me();
+        if(some_val == 20) this->_deactivate_other(201);
+        if(some_val == 40) this->_activate_other(201);
+
+        if(some_val == 60){
+            this->_deactivate_me();
+            this->_deactivate_other(201);
+        }
     }
 
     int16_t some_val_cnt{0};  

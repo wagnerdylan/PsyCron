@@ -80,8 +80,17 @@ public:
      * @return The object or null if the index is out of range.
      */
     T remove_queue(uint16_t index){
-        // @ TODO
-        return NULL;
+        if(index >= queue_size || index < 0)
+            return NULL;
+
+        T elem_at_index = heap_array[index];
+
+        heap_array[index] = heap_array[queue_size - 1];
+        queue_size -= 1;
+
+        sift_down(index);
+
+        return elem_at_index;
     }
 
     /**
@@ -107,8 +116,16 @@ public:
      * @return The object, or null if the index is out of range.
      */
     T remove_non_queue(uint16_t index){
-        // @TODO
-        return NULL;
+        if(index < capacity - non_queue_size || index >= capacity)
+            return NULL;
+
+        T elem_at_index = heap_array[index];
+
+        // Move the element at the index to the end of the non-queue
+        swap(capacity-non_queue_size, index);
+        non_queue_size -= 1;
+
+        return elem_at_index;
     }
 
     /**

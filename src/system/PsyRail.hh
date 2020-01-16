@@ -41,13 +41,6 @@ public:
         return m_hold_track->get_environment();
     }
 
-protected:
-
-    PsyRail(PsyTrack<EnvType>* track, uint16_t cap) :
-        m_hold_track{track},
-        m_sch_queue{cap}
-    {}
-
     inline bool deactivate_routine(uint16_t id){
         return m_hold_track->deactivate_routine(id);
     }
@@ -95,6 +88,13 @@ protected:
 
         return find_result.was_found;
     }
+    
+protected:
+
+    PsyRail(PsyTrack<EnvType>* track, uint16_t cap) :
+        m_hold_track{track},
+        m_sch_queue{cap}
+    {}
 
     PsyTrack<EnvType>* m_hold_track;
     
