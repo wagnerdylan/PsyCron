@@ -15,8 +15,6 @@
 #include "Codes.hh"
 #include "Macros.hh"
 
-#include <iostream>
-
 namespace psycron {
 
 // Forward declarations
@@ -107,7 +105,6 @@ public:
                  m_sch_queue.m_split_queue.get_non_queue_size(); 
             i--
         ){
-            std::cout << "Should not see " << m_sch_queue.m_split_queue.get_capacity() << std::endl;
             m_sch_queue.m_split_queue.peek_heap()[i]->init();
         }
     }
