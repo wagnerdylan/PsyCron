@@ -59,6 +59,11 @@ class TestTimedRoutine : public psycron::TimedRoutine<EnvType>
 {
 public:
 
+    void init(){
+        std::cout << "Routine " << this->_id
+            << " INIT" << std::endl;
+    }
+
     int16_t get_some_val(){
         return(290);
     }
@@ -84,9 +89,9 @@ int main(){
     psycron_ins.add_application(
         0, // Identifer for the application 
         simple_env, // Application envrionment 
-        psycron::PsyTrack<int>::PriorityRoutineArgs{new TestRoutine<int>{}, uint16_t{200}, 1},
-        psycron::PsyTrack<int>::PriorityRoutineArgs{new TestRoutine<int>{}, uint16_t{201}, 2},
-        psycron::PsyTrack<int>::TimedRoutineArgs{new TestTimedRoutine<int>{}, uint16_t{1}, 1000},
+        //psycron::PsyTrack<int>::PriorityRoutineArgs{new TestRoutine<int>{}, uint16_t{200}, 1},
+        //psycron::PsyTrack<int>::PriorityRoutineArgs{new TestRoutine<int>{}, uint16_t{201}, 2},
+        //psycron::PsyTrack<int>::TimedRoutineArgs{new TestTimedRoutine<int>{}, uint16_t{1}, 1000},
         psycron::PsyTrack<int>::TimedRoutineArgs{new TestTimedRoutine<int>{}, uint16_t{2}, 5000}
     );
 

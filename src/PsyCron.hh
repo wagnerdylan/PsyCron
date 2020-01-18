@@ -78,8 +78,8 @@ public:
                 this, 
                 args...
             );
-        m_rail_track[m_num_track_cnt++] = track;
-
+        m_rail_track[m_num_track_cnt] = track;
+        m_num_track_cnt += 1;
     }
 
     /**
@@ -131,7 +131,7 @@ private:
      * Used to initialize routines across the entire system at startup.
      */
     void init_system(){
-        for(uint16_t i{0}; i < m_track_cap; ++i){
+        for(uint16_t i{0}; i < m_num_track_cnt; ++i){
             m_rail_track[i]->init_rails();
         }
     }

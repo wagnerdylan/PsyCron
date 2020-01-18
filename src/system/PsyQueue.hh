@@ -74,14 +74,16 @@ public:
     FindResult find_non_active(const uint16_t id){
         FindResult result{};
 
-        for(uint16_t i = m_split_queue.get_capacity() - 1; 
-            i >= m_split_queue.get_capacity() - m_split_queue.get_non_queue_size(); 
-            i--
-        ){
-            if(m_split_queue.peek_heap()[i]->_id == id){
-                result.was_found = true;
-                result.index = i;
-                break;
+        if(m_split_queue.get_capacity() > 0) {
+            for(uint16_t i = m_split_queue.get_capacity() - 1; 
+                i >= m_split_queue.get_capacity() - m_split_queue.get_non_queue_size(); 
+                i--
+            ){
+                if(m_split_queue.peek_heap()[i]->_id == id){
+                    result.was_found = true;
+                    result.index = i;
+                    break;
+                }
             }
         }
 
