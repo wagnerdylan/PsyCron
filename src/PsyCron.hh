@@ -127,8 +127,13 @@ private:
         //@TODO check state just before first execution, fail on any violators.
     }
 
+    /**
+     * Used to initialize routines across the entire system at startup.
+     */
     void init_system(){
-        // @TODO Call init on everything
+        for(uint16_t i{0}; i < m_track_cap; ++i){
+            m_rail_track[i]->init_rails();
+        }
     }
 
     PsyTrackBase* m_current_track;

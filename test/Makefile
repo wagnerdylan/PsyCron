@@ -1,6 +1,6 @@
 CXX = g++
 AVR_CXX = avr-g++
-INCLUDE = -I../src -I../src/usr -I../src/system -I../lib -I/usr/avr/include
+INCLUDE = -I../src -I../src/system -I../lib -I/usr/avr/include
 SRC_DIR = ../src
 FILES = ../src/PsyCron.cpp ../src/system/PsyTrack.cpp test.cpp 
 OBJECTS = PsyCron.o PsyTrack.o test.o 

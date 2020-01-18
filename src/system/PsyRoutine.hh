@@ -35,6 +35,8 @@ public:
         return psyalloc_key_func(size);
     };
 
+    virtual void init(){};
+
     uint16_t _id;
 
     bool _is_active;

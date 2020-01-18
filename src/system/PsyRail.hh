@@ -89,6 +89,23 @@ public:
         return find_result.was_found;
     }
 
+    /**
+     * Used to initialized the routines at startup.
+     */
+    void init_routines(){
+        for(uint16_t i{0}; i < m_sch_queue.m_split_queue.get_queue_size(); i++){
+            m_sch_queue.m_split_queue.peek_heap()[i]->init();
+        }
+
+        for(uint16_t i = m_sch_queue.m_split_queue.get_capacity() - 1; 
+            i >= m_sch_queue.m_split_queue.get_capacity() - 
+                 m_sch_queue.m_split_queue.get_non_queue_size(); 
+            i--
+        ){
+            m_sch_queue.m_split_queue.peek_heap()[i]->init();
+        }
+    }
+
 protected:
 
     PsyRail(PsyTrack<EnvType>* track, uint16_t cap) :

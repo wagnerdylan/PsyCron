@@ -43,6 +43,8 @@ private:
 
 	virtual void execute() = 0;
 
+	virtual void init_rails() = 0;
+
 };
 
 template <typename EnvType>
@@ -155,11 +157,22 @@ private:
 		uint16_t timed_num;
 	};
 
+	/**
+	 * Main execution handler for the track.
+	 */
 	void execute(){
 		m_priority_rail.execute();
 		m_handle_max_priority = false;
 		m_timed_rail.execute();
 	};
+
+	/**
+	 * Used to initialize the rails on startup.
+	 */
+	void init_rails(){
+		m_priority_rail.init_routines();
+		m_timed_rail.init_routines();
+	}
 
 	void insert_routine(PriorityRoutineArgs arg){
 		m_priority_rail.insert_routine(arg.m_routine, arg.m_id, arg.m_value, arg.m_is_active);
