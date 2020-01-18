@@ -1,6 +1,6 @@
 # PsyCron
 
-PsyCron is a simplistic Run to Completion (RTC) RTOS designed for embedded applications.
+PsyCron is a simplistic priority and time based cooperative scheduler designed for embedded applications. 
 
 ## Concepts
 
