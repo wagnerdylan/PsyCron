@@ -75,5 +75,14 @@ TODO
 A track in PsyCron is an application. Tracks hold the necessary utility to facilitate the handling of routines within PsyCron. A Track also provides a way to store a mutable environment which can be accessed by all routines executing in under it. 
 
 ```
-TODO add track creation example
+psycron::PsyCron psycron_ins(config, 1);
+
+ psycron_ins.add_application(
+      0, // Identifer for the application 
+      simple_env, // Application envrionment
+      psycron::PsyTrack<int>::PriorityRoutineArgs{new PriorityExample<int>{}, uint16_t{1}, 1},
+      psycron::PsyTrack<int>::TimedRoutineArgs{new TimedExample<int>{}, uint16_t{2}, 1000}
+      // Can add more routines here...
+  );
+
 ```
