@@ -22,10 +22,6 @@ Done because PsyCron does not support routine/task preemption.
 
 ### PsyCron Specific
 
-#### Static in Arena Allocation Interface
-
-TODO
-
 ### Routines
 
 #### Priority Routines
@@ -33,7 +29,20 @@ TODO
 Priority routines are designed to execute as fast as possible. The operating frequency of the priority routine is determined by the execution environment. This means priority routine operating frequency is relative to other routines in the same execution environment. *Note:* Priority routines assigned a priority value of 0 will execute exactly next. A priority value of 0 should be used for routines which need to be executed exactly next and are only active for one cycle.
 
 ```
-TODO Add example priority routine here
+template <typename EnvType>
+class PriorityExample : public psycron::PriorityRoutine<EnvType>
+{
+public:
+  
+  // Optional method 
+  void init();
+  
+private:
+
+  // Required method
+  void run();
+  
+};
 ```
 
 #### Timed Routines
@@ -41,7 +50,20 @@ TODO Add example priority routine here
 TODO
 
 ```
-TODO Add timed routine example here
+template <typename EnvType>
+class TimedExample : public psycron::TimedRoutine<EnvType>
+{
+public:
+  
+  // Optional method 
+  void init();
+  
+private:
+
+  // Required method
+  void run();
+  
+};
 ```
 
 #### Active / Non-Active Routine States
