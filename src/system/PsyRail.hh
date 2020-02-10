@@ -37,7 +37,7 @@ public:
 
     virtual void execute() = 0;
 
-    EnvType& get_envrionment(){
+    EnvType& get_environment(){
         return m_hold_track->get_environment();
     }
 

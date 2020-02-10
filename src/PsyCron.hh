@@ -61,7 +61,7 @@ public:
      * Adds an application into the PsyCron system atomically.
      * 
      * @param id The id of the routine.
-     * @param global_env The application envrionment.
+     * @param global_env The application environment.
      * @param args Varadict function parameter containing the routines to be added into the application.
      */
     template<typename EnvType, typename ... Args>

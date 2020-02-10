@@ -73,8 +73,8 @@ protected:
         return m_hold_rail->deactivate_routine(other_id);
     };
 
-    EnvType& _get_envrionment(){
-        return m_hold_rail->get_envrionment();
+    EnvType& _get_environment(){
+        return m_hold_rail->get_environment();
     }
 
     // Redefined as private in derived class

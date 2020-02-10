@@ -40,7 +40,7 @@ private:
     void run(){
         int16_t some_val = get_some_val();
         std::cout << "Routine " << this->_id << " some val: " << some_val
-            << " Envrionment: " << ++this->_get_envrionment() << std::endl;
+            << " environment: " << ++this->_get_environment() << std::endl;
 
         if(some_val == 20) this->_deactivate_other(201);
         if(some_val == 40) this->_activate_other(201);
@@ -72,7 +72,7 @@ private:
 
     void run(){
         std::cout << "Routine " << this->_id
-            << " Envrionment: " << ++this->_get_envrionment() << std::endl;
+            << " environment: " << ++this->_get_environment() << std::endl;
     }
 };
 
@@ -88,7 +88,7 @@ int main(){
     
     psycron_ins.add_application(
         0, // Identifer for the application 
-        simple_env, // Application envrionment 
+        simple_env, // Application environment 
         //psycron::PsyTrack<int>::PriorityRoutineArgs{new TestRoutine<int>{}, uint16_t{200}, 1},
         //psycron::PsyTrack<int>::PriorityRoutineArgs{new TestRoutine<int>{}, uint16_t{201}, 2},
         //psycron::PsyTrack<int>::TimedRoutineArgs{new TestTimedRoutine<int>{}, uint16_t{1}, 1000},
